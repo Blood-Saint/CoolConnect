@@ -86,7 +86,7 @@ public class GroupOwnerWorkerAsyncTask implements Runnable {
             	
             	//Log.d("message", "received message: " + readString);
             	
-            	if (readString.getText().startsWith("!") || readString.getFlag() == 2) {
+            	if (readString.getText().startsWith("!") || readString.getType() == ChatMessage.Types.COMMAND) {
             		// it's a command
             		String[] args = readString.getText().split("\\s+");
             		runCommand(args[0], args);

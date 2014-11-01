@@ -7,24 +7,21 @@ import java.io.Serializable;
  */
 public class ChatMessage implements Serializable{
     private static final long serialVersionUID = -5967900946938355970L;
+    public enum Types {MESSAGE,ACK,COMMAND};
 
     private final String text;
-    /*
-     * 0 = chat message
-     * 1 = confirmation message
-     * 2 = command
-     */
-    private final int flag;
+    private final Types type;
+
 
     public ChatMessage(String text) {
         this.text = text;
-        flag = 0;
+        type = Types.MESSAGE;
     }
     
-    public ChatMessage(String text, int flag)
+    public ChatMessage(String text, Types type)
     {
     	this.text = text;
-    	this.flag = flag;
+    	this.type = type;
     }
     
 
@@ -32,9 +29,9 @@ public class ChatMessage implements Serializable{
         return text;
     }
     
-    public int getFlag()
+    public Types getType()
     {
-    	return flag;
+    	return type;
     }
 
     @Override

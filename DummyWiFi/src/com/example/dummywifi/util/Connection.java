@@ -101,11 +101,11 @@ public class Connection {
 	public ChatMessage receiveString() {
         ChatMessage message = receiveMessage();
         if (message != null) {
-        	if (message.getFlag() != 1)
+        	if (message.getType() != ChatMessage.Types.ACK)
         	{
         		//does this work?
         		Log.d("Message is: ", message.getText());
-        		//ChatMessage rmessage = new ChatMessage("hello", 1);
+        		//ChatMessage rmessage = new ChatMessage("hello", ChatMessage.Types.ACK);
         		//sendMessage(rmessage);
         	}
             return message;
