@@ -7,6 +7,7 @@ import java.io.StreamCorruptedException;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
+import java.util.UUID;
 
 import android.util.Log;
 
@@ -23,6 +24,8 @@ public class Connection {
     private ObjectInputStream inputStream = null;
     private ObjectOutputStream outputStream = null;
 
+    private final AckManager ackManager;
+
 	public Connection(Socket source) {
 		this.connectionSocket = source;
 
@@ -31,13 +34,25 @@ public class Connection {
 		} catch (SocketException e) {
 			Log.e("connection", "failed to set timeout: " + e);
 		}
+
+        this.ackManager = new AckManager(this);
+        Thread ackThread = new Thread(ackManager);
+        ackThread.setUncaughtExceptionHandler(
+                new Thread.UncaughtExceptionHandler() {
+                    @Override
+                    public void uncaughtException(Thread thread, Throwable throwable) {
+                        Log.e("AckManager", "AckManager has crashed!",throwable);
+                    }
+                }
+        );
+        ackThread.start();
 	}
 	
 	public boolean isOpen() {
 		return (!connectionSocket.isClosed()) && connectionSocket.isConnected() && (!connectionSocket.isInputShutdown()) && (!connectionSocket.isOutputShutdown());
 	}
 
-    private synchronized boolean sendMessage(ChatMessage message) {
+    protected synchronized boolean sendMessage(ChatMessage message) {
         if (!this.isOpen()) return false;
         // initialize the stream on first use, not possible in constructor because the socket is not yet connected
         if (outputStream == null){
@@ -95,23 +110,48 @@ public class Connection {
 
 	// wrapper for sending text
 	public boolean sendText(String text) {
-        return sendMessage(new ChatMessage(text));
+        ChatMessage message = new ChatMessage(text);
+        ackManager.messageSent(message);
+        return sendMessage(message);
 	}
+
+    /**
+     * This function is only called by the chat owner, it is a workaround for the fact
+     * that we are "sending" all messages to ourself in order to write messages
+     * to the UI for display with username.
+     * @param text message text WITH USERNAME
+     * @return
+     */
+    public boolean sendNamedText(String text) {
+        ChatMessage message = new ChatMessage(text);
+        // don't bother telling ackmgr about this, we aren't expecting any acks
+        return sendMessage(message);
+    }
+    // wrapper for sending commands
+    public boolean sendCommand(String text) {
+        ChatMessage message = new ChatMessage(text, ChatMessage.Types.COMMAND);
+        ackManager.messageSent(message);
+        return sendMessage(message);
+    }
+
+    protected boolean sendAck(UUID ackId) { return sendMessage(new ChatMessage(ackId.toString(), ChatMessage.Types.ACK)); }
 	
 	public ChatMessage receiveString() {
         ChatMessage message = receiveMessage();
         if (message != null) {
-        	if (message.getType() != ChatMessage.Types.ACK)
-        	{
-        		//does this work?
-        		Log.d("Message is: ", message.getText());
-        		//ChatMessage rmessage = new ChatMessage("hello", ChatMessage.Types.ACK);
-        		//sendMessage(rmessage);
-        	}
-            return message;
-        } else {
-            return null;
+        	switch (message.getType()) {
+                case MESSAGE:
+                    ackManager.messageReceived(message.getId());
+                    return message;
+                case ACK:
+                    ackManager.ackReceived(UUID.fromString(message.getText()));
+                    return receiveString(); // hack, since for now we are only checking for one message at a time
+                case COMMAND:
+                    ackManager.messageReceived(message.getId());
+                    return message;
+            }
         }
+        return null;
 	}
 	
 	public void close() {

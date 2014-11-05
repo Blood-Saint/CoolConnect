@@ -1,0 +1,51 @@
+Sprint 2 Plan
+CoolConnect
+Maid of Fire
+Ends 11/12/14
+Revision: 11/3/14
+
+Goal: Complete basic meshnetwork + implement basic features + fix remaing bugs
+
+User Story 1: As a developer I want a solid code base so I can expand on it effectively
+Task 1: Fix chat “garbage” (5)
+Task 2: Broadcasting (6)
+Task 3: change messenger to use objects instead of raw strings (5)
+Task 4: test bugs (8) X 3
+Task 5: fix bugs (8)
+Task 6: Discover (4)
+
+total- 52
+
+User Story 2: As a user I want a chat network to be as expansive and resilient as possible while
+still being solely peer-to-peer so I can have robust interactions without relying on a centralized system.
+Task 1: Work on protocol. (6)
+Task 2: Bug test protocol. (6)
+Task 3: Work on connecting to multiple people (8)
+Task 4: Figure out how chat will be sanity checked (4)
+Task 5: Start to implement sanity checking(21)
+
+total- 45
+
+User Story 3: As a user I want to chat with people nearby so I can have a simple and easy way of connecting quickly
+Task 1: Turn globals into class- (6)
+Task 2: Create UI- (2)
+
+total- 8
+
+Roles:
+Kevin Gray - Network Developer
+Alex Krishnan- Network Developer
+Gabe Yanovsky- Troubleshooter
+Eric Kaneshige - Feature Developer
+Andrew Guttman- Feature Developer, UI Developer
+
+Tasks:
+Kevin Gray: User Story 2 Tasks 1-5
+Alex Krishnan: User Story 2 Tasks 1-5
+Gabe Yanovsky: User Story 1 Tasks 3, 4, 5
+Eric Kaneshige: User Story 1 Task 1, 4, User Story 3 Task 1-2
+Andrew Guttman: User Story 1 Task 2, 6, User Story 3 Task 1-2
+
+Creating a mesh network will be hard, so two members, Kevin and Alex, are working together on it.
+Gabe is in charge of finding and fixing unspecified bugs while Andrew and Eric work on specific issues,
+and will contribute to general bug squashing if they have time. Andrew and Eric will also work on the nearby chat feature.

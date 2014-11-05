@@ -5,7 +5,7 @@ import com.example.dummywifi.models.Client;
 
 public class JoinGroupCommandExecutor implements CommandExecutor {
 
-	public static final String COMMAND_MESSAGE = "!joingroup";
+	public static final String COMMAND_MESSAGE = "joingroup";
 	
 	@Override
 	public boolean executeCommand(ChatSession session, Client caller, String command, String[] args) {

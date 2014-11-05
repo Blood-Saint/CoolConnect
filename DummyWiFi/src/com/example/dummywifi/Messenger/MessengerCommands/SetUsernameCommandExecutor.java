@@ -5,7 +5,7 @@ import com.example.dummywifi.models.Client;
 
 public class SetUsernameCommandExecutor implements CommandExecutor {
 
-	public static final String COMMAND_MESSAGE = "!setusername";
+	public static final String COMMAND_MESSAGE = "setusername";
 	
 	public boolean isValidUserName(String userName, ChatSession session) {
 		for (Client c: session.getConnectedClients()){ 

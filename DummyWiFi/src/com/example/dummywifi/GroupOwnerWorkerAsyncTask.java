@@ -75,7 +75,7 @@ public class GroupOwnerWorkerAsyncTask implements Runnable {
 				lastToken = result;
 				// star messages by this client, so it knows what side to display them on
 				String userNameStarred = messages.toString().replace(client.getUserName(), "*" + client.getUserName());
-				connection.sendText(userNameStarred);
+				connection.sendNamedText(userNameStarred);
 				messages = new StringBuffer();
 			} else {
 				//Log.d("gowat", "no new messages. token: " + lastToken);
@@ -86,7 +86,7 @@ public class GroupOwnerWorkerAsyncTask implements Runnable {
             	
             	//Log.d("message", "received message: " + readString);
             	
-            	if (readString.getText().startsWith("!") || readString.getType() == ChatMessage.Types.COMMAND) {
+            	if (readString.getType() == ChatMessage.Types.COMMAND) {
             		// it's a command
             		String[] args = readString.getText().split("\\s+");
             		runCommand(args[0], args);

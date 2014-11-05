@@ -37,7 +37,7 @@ public class ChatSession {
 		messageQueue.clear();
 		
 	}
-	
+	//get rid of delimiter and queuebuffer and return an array of strings
 	public int fetchMessages(int lastToken, StringBuffer queueBuffer) {
 		if (lastToken < messageQueue.size()) { // retrieve messages until you have the current message
 			int i, byteCount = 0;

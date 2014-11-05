@@ -1,6 +1,8 @@
 package com.example.dummywifi.models;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by alex on 10/26/14.
@@ -11,16 +13,22 @@ public class ChatMessage implements Serializable{
 
     private final String text;
     private final Types type;
+    private final UUID id;
+    private final long timestamp;
 
 
     public ChatMessage(String text) {
+        this.id = UUID.randomUUID();
+        this.timestamp = System.currentTimeMillis();
         this.text = text;
         type = Types.MESSAGE;
     }
     
     public ChatMessage(String text, Types type)
     {
-    	this.text = text;
+    	this.id = UUID.randomUUID();
+        this.timestamp = System.currentTimeMillis();
+        this.text = text;
     	this.type = type;
     }
     
@@ -34,6 +42,10 @@ public class ChatMessage implements Serializable{
     	return type;
     }
 
+    public UUID getId() { return id; }
+
+    public long getTimestamp() { return timestamp; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -41,13 +53,23 @@ public class ChatMessage implements Serializable{
 
         ChatMessage message = (ChatMessage) o;
 
-        if (!text.equals(message.text)) return false;
+        if (!id.equals(message.id)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return text.hashCode();
+        return id.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "ChatMessage{" +
+                "text='" + text + '\'' +
+                ", type=" + type +
+                ", id=" + id +
+                ", timestamp=" + timestamp +
+                '}';
     }
 }

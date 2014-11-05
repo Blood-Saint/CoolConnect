@@ -44,7 +44,7 @@ public class GroupMemberClientAsyncTask implements Runnable {
 			socket.connect(groupOwnerAddress, 3000);
 			connection = new Connection(socket);
 				
-			connection.sendText("!joingroup");
+			connection.sendCommand("joingroup");
 			Message msg = new Message();
 			msg.what = GMCAT_JOIN_MESSAGE;
 			((MainActivity)mainActivity).handler.sendMessage(msg);
