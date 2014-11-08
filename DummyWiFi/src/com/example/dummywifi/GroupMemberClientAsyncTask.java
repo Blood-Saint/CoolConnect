@@ -23,13 +23,19 @@ public class GroupMemberClientAsyncTask implements Runnable {
 	
 	private Activity mainActivity, chatActivity;
 	private List<String> messagesToSend;
-	
+	private Connection connection;
 	public GroupMemberClientAsyncTask(Activity mainActivity, SocketAddress groupOwnerAddress) {
 		this.groupOwnerAddress = groupOwnerAddress;
 		this.mainActivity = mainActivity;
 		this.messagesToSend = new ArrayList<String>();
 	}
-	
+
+    public void closeClient() {
+        if (connection != null) {
+            connection.close();
+        }
+    }
+
 	public synchronized void queueMessageToSend(String message) { // called from chatactivity when you push send
 		messagesToSend.add(message);
 	}
@@ -37,11 +43,11 @@ public class GroupMemberClientAsyncTask implements Runnable {
 	@Override
 	public void run() {
 		Socket socket = new Socket();
-		Connection connection = null;		
-		
+		//Connection connection = null;
+		connection = null;
 		try {
 			socket.bind(null);
-			socket.connect(groupOwnerAddress, 3000);
+			socket.connect(groupOwnerAddress, 8888); // used to be 3000
 			connection = new Connection(socket);
 				
 			connection.sendCommand("joingroup");

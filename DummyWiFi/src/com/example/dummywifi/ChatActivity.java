@@ -47,6 +47,7 @@ public class ChatActivity extends Activity {
 	
 	public static Activity currentChatActivity = null;
 	public GroupMemberClientAsyncTask gmcat;
+    //public GroupOwnerServerAsyncTask gosat;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -137,8 +138,11 @@ public class ChatActivity extends Activity {
 			
 			@Override
             public void onSuccess() {
-				Log.i("back","Disconnect Successful");
+                Log.i("back","Disconnect Successful");
+                gmcat.closeClient();
+
             }
+
 
             @Override
             public void onFailure(int reasonCode) {

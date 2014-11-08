@@ -26,7 +26,7 @@ public class GroupOwnerServerAsyncTask implements Runnable {
 	//private Context context;
     //private TextView statusText;
 	ChatSession session; // the session that this task is serving
-
+    private ServerSocket serverSocket;
     /**
      * @param context
      * @param statusText
@@ -40,12 +40,21 @@ public class GroupOwnerServerAsyncTask implements Runnable {
 
     }
 
+    public void closeServer() {
+        try {
+            serverSocket.close();
+        } catch(IOException e) {
+            Log.e("netcode", e.getMessage());
+        }
+
+    }
+
     @Override
     public void run() {
-    	ServerSocket serverSocket;
+    	//ServerSocket serverSocket;
     	
         try {
-            serverSocket = new ServerSocket(8888);
+            serverSocket = new ServerSocket(8888); //8888
             Log.d("netcode", "Server: Socket opened");
             
             while (!serverSocket.isClosed()) { // shouldn't happen unless maybe the wifi gets turned off
