@@ -72,10 +72,12 @@ class AckManager implements Runnable{
                 if (sweepTime - message.getTimestamp() > RETRY_TIMEOUT) {
                     if (retriedMessages.contains(message.getId())) {
                         // we have already retried this message, time to give up
+                        Log.e("AckManager", "giving up on resending " + message.getId());
                         retriedMessages.remove(message.getId());
                         nonAckedMessages.remove(message.getId());
                     } else {
                         // we haven't tried this message again yet, let's do it now
+                        Log.e("AckManager", "ACK timeout, resending " + message.getId());
                         retriedMessages.add(message.getId());
                         connection.sendMessage(message);
                     }
