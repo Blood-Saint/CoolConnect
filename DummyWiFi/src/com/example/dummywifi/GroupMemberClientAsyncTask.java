@@ -6,6 +6,7 @@ import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Hashtable;
+import java.util.Random;
 
 import com.example.dummywifi.Messenger.ChatSession;
 import com.example.dummywifi.util.Connection;
@@ -62,6 +63,15 @@ public class GroupMemberClientAsyncTask implements Runnable {
         this.session = session;
     }
 
+    private void runCommand(String command, String[] args) {
+        if (commandMap != null) {
+            CommandExecutor exec = commandMap.get(command);
+            if (exec != null) {
+                exec.executeCommand(session, client, command, args);
+            }
+        }
+    }
+
     public void closeClient() {
         if (connection != null) {
             connection.close();
@@ -74,28 +84,81 @@ public class GroupMemberClientAsyncTask implements Runnable {
 	
 	@Override
 	public void run() {
-		Socket socket = new Socket();
-		//Connection connection = null;
-		connection = null;
+        ChatMessage readString = null;
+        int lastToken = 0;
+        StringBuffer messages = new StringBuffer();
+
 		try {
-			socket.bind(null);
-			socket.connect(groupOwnerAddress, 3000); //this is timeout
-			connection = new Connection(socket);
-				
-			connection.sendCommand("joingroup");
-			Message msg = new Message();
-			msg.what = GMCAT_JOIN_MESSAGE;
-			((MainActivity)mainActivity).handler.sendMessage(msg);
-			Thread.sleep(500);
-			//socket.getOutputStream().write("!joingroup".getBytes());
-			
-			// for testing messages
-			while (ChatActivity.currentChatActivity == null) {
-				Thread.sleep(10);
-			}
-			((ChatActivity)ChatActivity.currentChatActivity).gmcat = this;
-			
+            if (client == null) {
+                Socket socket = new Socket();
+                //Connection connection = null;
+                connection = null;
+                // above line originally out of try
+                socket.bind(null);
+                socket.connect(groupOwnerAddress, 3000); //this is timeout
+                connection = new Connection(socket);
+
+                connection.sendCommand("joingroup");
+                Message msg = new Message();
+                msg.what = GMCAT_JOIN_MESSAGE;
+                ((MainActivity) mainActivity).handler.sendMessage(msg);
+                Client client = new Client(connection, session.getNextId());
+                client.setUserName("user" + new Random().nextInt(100));
+
+                Thread.sleep(500);
+                //socket.getOutputStream().write("!joingroup".getBytes());
+
+                // for testing messages
+                while (ChatActivity.currentChatActivity == null) {
+                    Thread.sleep(10);
+                }
+                ((ChatActivity) ChatActivity.currentChatActivity).gmcat = this;
+            }
+            else
+            {
+                connection = client.getConnection();
+
+
+            }
 			while (connection.isOpen()) {
+                int result = session.fetchMessages(lastToken, messages);
+
+                if (result != lastToken) { // there are new messages, send them to the client
+                    //Log.d("gowat", "new messages! requested with token: " + lastToken + " and received a new token: " + result);
+                    lastToken = result;
+                    // star messages by this client, so it knows what side to display them on
+                    String userNameStarred = messages.toString().replace(client.getUserName(), "*" + client.getUserName());
+                    connection.sendNamedText(userNameStarred);
+                    messages = new StringBuffer();
+                } else {
+                    //Log.d("gowat", "no new messages. token: " + lastToken);
+                }
+
+                if ((readString = connection.receiveString()) != null) {
+                    //Log.d("message", "message received");
+
+                    //Log.d("message", "received message: " + readString);
+
+                    if (readString.getType() == ChatMessage.Types.COMMAND) {
+                        // it's a command
+                        String[] args = readString.getText().split("\\s+");
+                        runCommand(args[0], args);
+                    } else {
+                        // it's a message
+                        // put it in the message queue
+                        session.queueMessage(client.getUserName() + ": " +  readString.getText());
+                        Log.d("message", "put '" + readString.getText() + "' into the message queue");
+                    }
+                }
+                try {
+                    Thread.sleep(ChatSession.dispatchDelay);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    //Log.e("gowat", "exception");
+                    e.printStackTrace();
+                }
+
+
 				if (messagesToSend.size() > 0) {
 					for (String message : messagesToSend) {
 						connection.sendText(message);
@@ -108,9 +171,9 @@ public class GroupMemberClientAsyncTask implements Runnable {
 				ChatMessage newMessages = null;
 				if ((newMessages = connection.receiveString()) != null) {
             		Log.d("message", "Client received message: " + newMessages.getText());
-            		String[] messages = newMessages.getText().split(ChatSession.messageDelim);
-            		Log.d("message", "actual message count: " + messages.length);
-            		for (String message : messages) {
+            		String[] recievedMessages = newMessages.getText().split(ChatSession.messageDelim);
+            		Log.d("message", "actual message count: " + recievedMessages.length);
+            		for (String message : recievedMessages) {
 						// This block will move to the gmcat. Right now the gmcat is being used for testing sending "hello" over and over
 	            		// but that work will be moved to another thread spawned when the send button is pushed            		
 	            		Message newChatMessage = new Message();
