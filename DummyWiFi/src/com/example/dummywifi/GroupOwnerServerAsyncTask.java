@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import com.example.dummywifi.Messenger.ChatSession;
@@ -27,9 +29,12 @@ public class GroupOwnerServerAsyncTask implements Runnable {
     //private TextView statusText;
 	ChatSession session; // the session that this task is serving
     private ServerSocket serverSocket;
+
+    List<GroupMemberClientAsyncTask> memberList;
+
     /**
-     * @param context
-     * @param statusText
+     * @param //context
+     * @param //statusText
      */
     public GroupOwnerServerAsyncTask(/*Context context, View statusText*/) {
         /*this.context = context;
@@ -37,6 +42,7 @@ public class GroupOwnerServerAsyncTask implements Runnable {
     	session = new ChatSession();
     	session.queueMessage("Welcome to Spot!");
     	session.queueMessage("Start typing below to send a message.");
+        memberList = new ArrayList<GroupMemberClientAsyncTask>();
 
     }
 
@@ -68,7 +74,8 @@ public class GroupOwnerServerAsyncTask implements Runnable {
 	            Client client = new Client(connection, session.getNextId());
 	            client.setUserName("user" + new Random().nextInt(100));
 	           
-	            GroupOwnerWorkerAsyncTask gowat = new GroupOwnerWorkerAsyncTask(client, session);
+	            GroupMemberClientAsyncTask gowat = new GroupMemberClientAsyncTask(client, session);
+                memberList.add(gowat);
 	            Log.d("netcode", "Worker created, running it");
 	            
 	            Thread workerThread = new Thread(gowat);
