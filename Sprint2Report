@@ -1,0 +1,49 @@
+Sprint 2 Report Maid of Fire, CoolConnect
+November 12, 2014
+
+Things to Stop Doing:
+  -Stop misusing Git: There was a misunderstanding with an individual  in our group uploading files to Github because 
+    they accidentally were uploading all of their new files and updated files into their own personal fork. This 
+    is particularly dangerous because the fork was never merged and made the Github disorganized and difficult to 
+    follow.
+    
+Things to Start Doing: 
+  -More Programming Session Meet-ups: The group needs to meet up in order to increase the amount of needed work activity
+    per week to accommodate the large demand of the project. Many of the tasks we assigned in our user stories required 
+    more hours than we originally realized due to the immense number of bugs we discovered.
+  -Breaking up tasks better: The group has had difficulties in entirely completing specific user stories because of the 
+    bugs found while performing the tasks. Without having thoroughly established tasks in a sprint, the demand for the 
+    user stories then increases the amount of story points a user story should have had.
+  
+Things to Keep Doing:
+  -Communicating effectively: The group has been communicating thoroughly with each major progression in the project.
+    By maintaining strong communication amongst the group's progress, the group has been able to collaborate and 
+    effectively handle many of the issues that have risen from the project.
+  -Common understanding: Through the effectiveness of the group's communication, everyone has a strong grasp over the 
+    entire project's current state and understanding what the desired product is. This has allowed all development on 
+    the application to never skew away from its anticipated final design.
+  -Quality Assurance: The group has tested the application in each stage of development in order to see if the application
+    had continue to meet its expected requirements to its delivery standards. By using quality assurance, the application
+    is always tested to show how all of its protocols and mechanics are always improving and never hurting the app due to 
+    a new update.
+  
+Work Completed:
+  -Nearby User Story: The task of allowing the app CoolConnect to communicate to any other phone in a specific range
+    that is also running CoolConnect.
+  -Debug User Story: The task of fixing all the initial bugs that were found in the program that caused the program
+    to initially not complete its expected functions correctly.
+  
+Not Completed:
+  -Mesh Network
+
+Story Points: 60/105
+
+Ideal Work Hours: 105/105
+
+Story Point per Day: 4.3
+
+Ideal Work Hours Per Day: 7.5
+  
+Average Story Points: 2.15
+  
+Average Ideal Work Hours: 4.97
