@@ -32,6 +32,7 @@ public class GroupOwnerServerAsyncTask implements Runnable {
 	ChatSession session; // the session that this task is serving
     private ServerSocket serverSocket;
     private Activity mainActivity;
+    private SocketAddress startingAddress;
 
     List<GroupMemberClientAsyncTask> memberList;
 
@@ -39,9 +40,10 @@ public class GroupOwnerServerAsyncTask implements Runnable {
      * @param //context
      * @param //statusText
      */
-    public GroupOwnerServerAsyncTask(Activity mainActivity) {
+    public GroupOwnerServerAsyncTask(Activity mainActivity, SocketAddress address) {
         /*this.context = context;
         this.statusText = (TextView) statusText;*/
+        this.startingAddress = address;
         this.mainActivity = mainActivity;
     	session = new ChatSession();
     	session.queueMessage("Welcome to Spot!");
@@ -78,6 +80,7 @@ public class GroupOwnerServerAsyncTask implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     @Override
@@ -85,6 +88,7 @@ public class GroupOwnerServerAsyncTask implements Runnable {
     	//ServerSocket serverSocket;
     	
         try {
+            connectTo(startingAddress);
             serverSocket = new ServerSocket(8888); //8888
             Log.d("netcode", "Server: Socket opened");
             
