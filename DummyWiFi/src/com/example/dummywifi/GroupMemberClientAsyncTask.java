@@ -46,7 +46,7 @@ public class GroupMemberClientAsyncTask implements Runnable {
         commandMap.put(JoinGroupCommandExecutor.COMMAND_MESSAGE, new JoinGroupCommandExecutor());
     }
 
-	private SocketAddress groupOwnerAddress;
+
 	public static int GMCAT_JOIN_MESSAGE = 100;
 	public static int GMCAT_NEW_MESSAGE = 101;
 	
@@ -96,13 +96,7 @@ public class GroupMemberClientAsyncTask implements Runnable {
 
 		try {
             if (flag == 0) {
-                Socket socket = new Socket();
-                //Connection connection = null;
-                connection = null;
-                // above line originally out of try
-                socket.bind(null);
-                socket.connect(groupOwnerAddress, 3000); //this is timeout
-                connection = new Connection(socket);
+                connection = client.getConnection();
 
                 connection.sendCommand("joingroup");
                 Message msg = new Message();
@@ -199,8 +193,7 @@ public class GroupMemberClientAsyncTask implements Runnable {
 			//socket.getOutputStream().flush();
 			
 			
-		} catch (IOException Ex){
-			Ex.printStackTrace();
+
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

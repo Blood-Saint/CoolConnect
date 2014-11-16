@@ -31,6 +31,7 @@ public class GroupOwnerServerAsyncTask implements Runnable {
     //private TextView statusText;
 	ChatSession session; // the session that this task is serving
     private ServerSocket serverSocket;
+    private Activity mainActivity;
 
     List<GroupMemberClientAsyncTask> memberList;
 
@@ -38,9 +39,10 @@ public class GroupOwnerServerAsyncTask implements Runnable {
      * @param //context
      * @param //statusText
      */
-    public GroupOwnerServerAsyncTask(/*Context context, View statusText*/) {
+    public GroupOwnerServerAsyncTask(Activity mainActivity) {
         /*this.context = context;
         this.statusText = (TextView) statusText;*/
+        this.mainActivity = mainActivity;
     	session = new ChatSession();
     	session.queueMessage("Welcome to Spot!");
     	session.queueMessage("Start typing below to send a message.");
@@ -57,7 +59,7 @@ public class GroupOwnerServerAsyncTask implements Runnable {
 
     }
 
-    public void connectTo(Activity mainActivity, SocketAddress targetAddress)
+    public void connectTo(SocketAddress targetAddress)
     {
         Socket socket = new Socket();
         //Connection connection = null;
