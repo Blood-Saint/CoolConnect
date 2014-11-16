@@ -34,20 +34,21 @@ public class ConnectionInfo implements ConnectionInfoListener {
         		Log.i("netcode", "GOSAT running");
         		
         		// Now the group leader has to be a client
-        		GroupMemberClientAsyncTask gmcat = new GroupMemberClientAsyncTask(mainActivity, new InetSocketAddress(groupOwnerAddress, 8888));
-        		Thread serverClientThread = new Thread(gmcat);
-        		serverClientThread.start();
+        		gosat.connectTo(mainActivity, new InetSocketAddress(groupOwnerAddress, 8888));
         		
         	} else if (info.groupFormed) {
             	// The other device acts as the client. In this case,
             	// you'll want to create a client thread that connects to the group
             	// owner.
         		// Does the async thread start automatically once this class is instantiated?
-        		Log.i("netcode", "Running GMCAT");
-        		GroupMemberClientAsyncTask gmcat = new GroupMemberClientAsyncTask(mainActivity, new InetSocketAddress(groupOwnerAddress, 8888));
-        		Thread clientThread = new Thread(gmcat);
-        		clientThread.start();
-        		Log.i("netcode", "GMCAT is running");
+                GroupOwnerServerAsyncTask gosat = new GroupOwnerServerAsyncTask();
+                Thread serverThread = new Thread(gosat);
+                Log.i("netcode", "Running GroupOwnerAsyncTask");
+                serverThread.start();
+                Log.i("netcode", "GOSAT running");
+
+                // Now the group leader has to be a client
+                gosat.connectTo(mainActivity, new InetSocketAddress(groupOwnerAddress, 8888));
         	}
 		}
 	}

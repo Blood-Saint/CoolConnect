@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -16,6 +17,7 @@ import com.example.dummywifi.util.Connection;
 
 //import com.example.android.wifidirect.WiFiDirectActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -53,6 +55,27 @@ public class GroupOwnerServerAsyncTask implements Runnable {
             Log.e("netcode", e.getMessage());
         }
 
+    }
+
+    public void connectTo(Activity mainActivity, SocketAddress targetAddress)
+    {
+        Socket socket = new Socket();
+        //Connection connection = null;
+        Connection connection = null;
+        // above line originally out of try
+        try {
+            socket.bind(null);
+            socket.connect(targetAddress, 3000); //this is timeout
+            connection = new Connection(socket);
+            Client client = new Client(connection, session.getNextId());
+            client.setUserName("user" + new Random().nextInt(100));
+            GroupMemberClientAsyncTask target = new GroupMemberClientAsyncTask(mainActivity, client, session);
+            memberList.add(target);
+            Thread serverClientThread = new Thread(target);
+            serverClientThread.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

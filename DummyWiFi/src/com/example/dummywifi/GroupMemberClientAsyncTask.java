@@ -54,8 +54,9 @@ public class GroupMemberClientAsyncTask implements Runnable {
 	private List<String> messagesToSend;
 	private Connection connection;
 
-	public GroupMemberClientAsyncTask(Activity mainActivity, SocketAddress groupOwnerAddress) {
-		this.groupOwnerAddress = groupOwnerAddress;
+	public GroupMemberClientAsyncTask(Activity mainActivity, Client client, ChatSession session) {
+        this.client = client;
+        this.session = session;
 		this.mainActivity = mainActivity;
 		this.messagesToSend = new ArrayList<String>();
         flag = 0;
@@ -107,12 +108,6 @@ public class GroupMemberClientAsyncTask implements Runnable {
                 Message msg = new Message();
                 msg.what = GMCAT_JOIN_MESSAGE;
                 ((MainActivity) mainActivity).handler.sendMessage(msg);
-
-                //these were in server, right now these fix if member is connecting
-                //to someone else
-                session = new ChatSession();
-                Client client = new Client(connection, session.getNextId());
-                client.setUserName("user" + new Random().nextInt(100));
 
                 Thread.sleep(500);
                 //socket.getOutputStream().write("!joingroup".getBytes());
