@@ -88,10 +88,10 @@ public class GroupOwnerServerAsyncTask implements Runnable {
     	//ServerSocket serverSocket;
     	
         try {
-            connectTo(startingAddress);
             serverSocket = new ServerSocket(8888); //8888
             Log.d("netcode", "Server: Socket opened");
-            
+            connectTo(startingAddress);
+
             while (!serverSocket.isClosed()) { // shouldn't happen unless maybe the wifi gets turned off
             	// keep waiting for clients to come, then accept them and make a worker for them
 
