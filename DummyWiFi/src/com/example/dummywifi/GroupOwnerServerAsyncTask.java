@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
@@ -88,11 +89,16 @@ public class GroupOwnerServerAsyncTask implements Runnable {
     	//ServerSocket serverSocket;
     	
         try {
-
             serverSocket = new ServerSocket(8888); //8888
-            connectTo(startingAddress);
             Log.d("netcode", "Server: Socket opened");
-            
+            SocketAddress myAddress = new InetSocketAddress(8888);
+            connectTo(startingAddress);
+
+            // Also connect to ourselves if we are not the first member of the group
+            if (startingAddress != myAddress) {
+                connectTo(myAddress);
+            }
+
             while (!serverSocket.isClosed()) { // shouldn't happen unless maybe the wifi gets turned off
             	// keep waiting for clients to come, then accept them and make a worker for them
 
