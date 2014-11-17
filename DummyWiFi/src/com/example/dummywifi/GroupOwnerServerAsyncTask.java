@@ -88,8 +88,9 @@ public class GroupOwnerServerAsyncTask implements Runnable {
     	//ServerSocket serverSocket;
     	
         try {
-            connectTo(startingAddress);
+
             serverSocket = new ServerSocket(8888); //8888
+            connectTo(startingAddress);
             Log.d("netcode", "Server: Socket opened");
             
             while (!serverSocket.isClosed()) { // shouldn't happen unless maybe the wifi gets turned off
