@@ -95,7 +95,6 @@ public class GroupMemberClientAsyncTask implements Runnable {
         StringBuffer messages = new StringBuffer();
 
 		try {
-            if (flag == 0) {
                 connection = client.getConnection();
 
                 connection.sendCommand("joingroup");
@@ -111,13 +110,7 @@ public class GroupMemberClientAsyncTask implements Runnable {
                     Thread.sleep(10);
                 }
                 ((ChatActivity) ChatActivity.currentChatActivity).gmcat = this;
-            }
-            else
-            {
-                connection = client.getConnection();
 
-
-            }
 			while (connection.isOpen()) {
                 if (flag == 1) {
                     int result = session.fetchMessages(lastToken, messages);
