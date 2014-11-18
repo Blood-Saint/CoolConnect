@@ -34,8 +34,6 @@ public class GroupMemberClientAsyncTask implements Runnable {
     private Client client;
     private ChatSession session;
 
-    //temporary flag to seperate client and worker tasks
-    private int flag;
 
     public static Hashtable<String, CommandExecutor> commandMap;
 
@@ -59,15 +57,8 @@ public class GroupMemberClientAsyncTask implements Runnable {
         this.session = session;
 		this.mainActivity = mainActivity;
 		this.messagesToSend = new ArrayList<String>();
-        flag = 0;
 	}
 
-    public GroupMemberClientAsyncTask(Client client, ChatSession session)
-    {
-        this.client = client;
-        this.session = session;
-        flag = 1;
-    }
 
     private void runCommand(String command, String[] args) {
         if (commandMap != null) {
@@ -112,75 +103,73 @@ public class GroupMemberClientAsyncTask implements Runnable {
                 ((ChatActivity) ChatActivity.currentChatActivity).gmcat = this;
 
 			while (connection.isOpen()) {
-                if (flag == 1) {
-                    int result = session.fetchMessages(lastToken, messages);
 
-                    if (result != lastToken) { // there are new messages, send them to the client
-                        //Log.d("gowat", "new messages! requested with token: " + lastToken + " and received a new token: " + result);
-                        lastToken = result;
-                        // star messages by this client, so it knows what side to display them on
-                        String userNameStarred = messages.toString().replace(client.getUserName(), "*" + client.getUserName());
-                        connection.sendNamedText(userNameStarred);
-                        messages = new StringBuffer();
+                int result = session.fetchMessages(lastToken, messages);
+
+                if (result != lastToken) { // there are new messages, send them to the client
+                    //Log.d("gowat", "new messages! requested with token: " + lastToken + " and received a new token: " + result);
+                    lastToken = result;
+                    // star messages by this client, so it knows what side to display them on
+                    String userNameStarred = messages.toString().replace(client.getUserName(), "*" + client.getUserName());
+                    connection.sendNamedText(userNameStarred);
+                    messages = new StringBuffer();
+                } else {
+                    //Log.d("gowat", "no new messages. token: " + lastToken);
+                }
+
+                if ((readString = connection.receiveString()) != null) {
+                    //Log.d("message", "message received");
+
+                    //Log.d("message", "received message: " + readString);
+
+                    if (readString.getType() == ChatMessage.Types.COMMAND) {
+                        // it's a command
+                        String[] args = readString.getText().split("\\s+");
+                        runCommand(args[0], args);
                     } else {
-                        //Log.d("gowat", "no new messages. token: " + lastToken);
-                    }
-
-                    if ((readString = connection.receiveString()) != null) {
-                        //Log.d("message", "message received");
-
-                        //Log.d("message", "received message: " + readString);
-
-                        if (readString.getType() == ChatMessage.Types.COMMAND) {
-                            // it's a command
-                            String[] args = readString.getText().split("\\s+");
-                            runCommand(args[0], args);
-                        } else {
-                            // it's a message
-                            // put it in the message queue
-                            session.queueMessage(client.getUserName() + ": " + readString.getText());
-                            Log.d("message", "put '" + readString.getText() + "' into the message queue");
-                        }
-                    }
-                    try {
-                        Thread.sleep(ChatSession.dispatchDelay);
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        //Log.e("gowat", "exception");
-                        e.printStackTrace();
-                    }
-
-                }
-                else {
-
-
-
-                    if (messagesToSend.size() > 0) {
-                        for (String message : messagesToSend) {
-                            connection.sendText(message);
-                        }
-                        messagesToSend.clear();
-                    }
-                    //connection.sendText("hello");
-                    //Thread.sleep(750);
-
-                    ChatMessage newMessages = null;
-                    if ((newMessages = connection.receiveString()) != null) {
-                        Log.d("message", "Client received message: " + newMessages.getText());
-                        String[] recievedMessages = newMessages.getText().split(ChatSession.messageDelim);
-                        Log.d("message", "actual message count: " + recievedMessages.length);
-                        for (String message : recievedMessages) {
-                            // This block will move to the gmcat. Right now the gmcat is being used for testing sending "hello" over and over
-                            // but that work will be moved to another thread spawned when the send button is pushed
-                            Message newChatMessage = new Message();
-                            newChatMessage.what = GroupMemberClientAsyncTask.GMCAT_NEW_MESSAGE;
-                            newChatMessage.obj = message;
-
-                            ((ChatActivity) ChatActivity.currentChatActivity).handler.sendMessage(newChatMessage);
-                        }
-                        // -- end block
+                        // it's a message
+                        // put it in the message queue
+                        session.queueMessage(client.getUserName() + ": " + readString.getText());
+                        Log.d("message", "put '" + readString.getText() + "' into the message queue");
                     }
                 }
+                try {
+                    Thread.sleep(ChatSession.dispatchDelay);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    //Log.e("gowat", "exception");
+                    e.printStackTrace();
+                }
+
+
+
+
+                if (messagesToSend.size() > 0) {
+                    for (String message : messagesToSend) {
+                        connection.sendText(message);
+                    }
+                    messagesToSend.clear();
+                }
+                //connection.sendText("hello");
+                //Thread.sleep(750);
+
+                ChatMessage newMessages = null;
+                if ((newMessages = connection.receiveString()) != null) {
+                    Log.d("message", "Client received message: " + newMessages.getText());
+                    String[] recievedMessages = newMessages.getText().split(ChatSession.messageDelim);
+                    Log.d("message", "actual message count: " + recievedMessages.length);
+                    for (String message : recievedMessages) {
+                        // This block will move to the gmcat. Right now the gmcat is being used for testing sending "hello" over and over
+                        // but that work will be moved to another thread spawned when the send button is pushed
+                        Message newChatMessage = new Message();
+                        newChatMessage.what = GroupMemberClientAsyncTask.GMCAT_NEW_MESSAGE;
+                        newChatMessage.obj = message;
+
+                        ((ChatActivity) ChatActivity.currentChatActivity).handler.sendMessage(newChatMessage);
+                    }
+                    // -- end block
+                }
+
 			}
 			
 			//socket.getOutputStream().flush();

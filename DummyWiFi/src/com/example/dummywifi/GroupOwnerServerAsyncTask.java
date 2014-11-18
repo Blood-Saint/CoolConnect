@@ -110,7 +110,7 @@ public class GroupOwnerServerAsyncTask implements Runnable {
 	            Client client = new Client(connection, session.getNextId());
 	            client.setUserName("user" + new Random().nextInt(100));
 	           
-	            GroupMemberClientAsyncTask gowat = new GroupMemberClientAsyncTask(client, session);
+	            GroupMemberClientAsyncTask gowat = new GroupMemberClientAsyncTask(mainActivity, client, session);
                 memberList.add(gowat);
 	            Log.d("netcode", "Worker created, running it");
 	            
