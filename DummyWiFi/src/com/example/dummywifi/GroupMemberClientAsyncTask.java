@@ -59,7 +59,6 @@ public class GroupMemberClientAsyncTask implements Runnable {
 		this.messagesToSend = new ArrayList<String>();
 	}
 
-
     private void runCommand(String command, String[] args) {
         if (commandMap != null) {
             CommandExecutor exec = commandMap.get(command);
@@ -107,31 +106,11 @@ public class GroupMemberClientAsyncTask implements Runnable {
                 int result = session.fetchMessages(lastToken, messages);
 
                 if (result != lastToken) { // there are new messages, send them to the client
-                    //Log.d("gowat", "new messages! requested with token: " + lastToken + " and received a new token: " + result);
                     lastToken = result;
                     // star messages by this client, so it knows what side to display them on
                     String userNameStarred = messages.toString().replace(client.getUserName(), "*" + client.getUserName());
                     connection.sendNamedText(userNameStarred);
                     messages = new StringBuffer();
-                } else {
-                    //Log.d("gowat", "no new messages. token: " + lastToken);
-                }
-
-                if ((readString = connection.receiveString()) != null) {
-                    //Log.d("message", "message received");
-
-                    //Log.d("message", "received message: " + readString);
-
-                    if (readString.getType() == ChatMessage.Types.COMMAND) {
-                        // it's a command
-                        String[] args = readString.getText().split("\\s+");
-                        runCommand(args[0], args);
-                    } else {
-                        // it's a message
-                        // put it in the message queue
-                        session.queueMessage(client.getUserName() + ": " + readString.getText());
-                        Log.d("message", "put '" + readString.getText() + "' into the message queue");
-                    }
                 }
                 try {
                     Thread.sleep(ChatSession.dispatchDelay);
@@ -141,20 +120,24 @@ public class GroupMemberClientAsyncTask implements Runnable {
                     e.printStackTrace();
                 }
 
-
-
-
                 if (messagesToSend.size() > 0) {
                     for (String message : messagesToSend) {
                         connection.sendText(message);
                     }
                     messagesToSend.clear();
                 }
-                //connection.sendText("hello");
-                //Thread.sleep(750);
 
                 ChatMessage newMessages = null;
                 if ((newMessages = connection.receiveString()) != null) {
+                    if (newMessages.getType() == ChatMessage.Types.COMMAND) {
+                        // it's a command
+                        String[] args = newMessages.getText().split("\\s+");
+                        runCommand(args[0], args);
+                    } else {
+                        // it's a message
+                        // put it in the message queue
+                        //session.queueMessage(client.getUserName() + ": " + newMessages.getText());
+                    }
                     Log.d("message", "Client received message: " + newMessages.getText());
                     String[] recievedMessages = newMessages.getText().split(ChatSession.messageDelim);
                     Log.d("message", "actual message count: " + recievedMessages.length);
@@ -167,7 +150,6 @@ public class GroupMemberClientAsyncTask implements Runnable {
 
                         ((ChatActivity) ChatActivity.currentChatActivity).handler.sendMessage(newChatMessage);
                     }
-                    // -- end block
                 }
 
 			}

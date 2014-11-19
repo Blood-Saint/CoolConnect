@@ -44,16 +44,12 @@ public class ChatSession {
 			
 			for (i = lastToken; i < messageQueue.size(); i++) {
 				String message = messageQueue.get(i) + messageDelim;
-				byteCount += message.getBytes().length;
-				
-				if (byteCount > Connection.MAX_READ_SIZE && i > (lastToken)) { // you can't send more messages due to the byte limit
-					return i;
-				}
 				queueBuffer.append(message);
 			}
 			
 			return i;
 		}
+
 		return lastToken;
 	}
 	
