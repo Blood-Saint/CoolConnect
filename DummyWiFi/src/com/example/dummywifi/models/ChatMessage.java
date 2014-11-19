@@ -11,7 +11,7 @@ public class ChatMessage implements Serializable{
     private static final long serialVersionUID = -5967900946938355970L;
     public enum Types {MESSAGE,ACK,COMMAND};
 
-    private final String text;
+    private String text;
     private final Types type;
     private final UUID id;
     private final long timestamp;
@@ -36,6 +36,8 @@ public class ChatMessage implements Serializable{
     public String getText() {
         return text;
     }
+
+    public void setText(String newText) { text = newText; }
     
     public Types getType()
     {
