@@ -123,7 +123,7 @@ public class GroupMemberClientAsyncTask implements Runnable {
                         // it's a command
                         String[] args = readString.getText().split("\\s+");
                         runCommand(args[0], args);
-                    } else if (!session.getMessageIDs().contains(readString)){
+                    } else if (!session.getMessageIDs().contains(readString.getId())){
                         // it's a message
                         // put it in the message queue
                         readString.setText(client.getUserName() + ": " + readString.getText());
