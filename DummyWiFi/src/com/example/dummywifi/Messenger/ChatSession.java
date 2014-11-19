@@ -2,10 +2,12 @@ package com.example.dummywifi.Messenger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import android.util.Log;
 
 import com.example.dummywifi.ChatActivity;
+import com.example.dummywifi.models.ChatMessage;
 import com.example.dummywifi.models.Client;
 import com.example.dummywifi.util.Connection;
 
@@ -19,7 +21,8 @@ import com.example.dummywifi.util.Connection;
 public class ChatSession {
 
 	private List<Client> connectedClients;	
-	private List<String> messageQueue;
+	private List<ChatMessage> messageQueue;
+    private List<UUID> messageIDs;
 	
 	private int id_counter;
 	
@@ -27,9 +30,9 @@ public class ChatSession {
 	public static final int dispatchDelay = 750; // 750ms
 	public static final String messageDelim = "_&&_";
 	
-	public synchronized void queueMessage(String message) { // this is safe to call from any thread		
+	public synchronized void queueMessage(ChatMessage message) { // this is safe to call from any thread
 		messageQueue.add(message);
-
+        messageIDs.add(message.getId());
 	}
 	
 	public synchronized void clearMessages() {
@@ -43,7 +46,7 @@ public class ChatSession {
 			int i, byteCount = 0;
 			
 			for (i = lastToken; i < messageQueue.size(); i++) {
-				String message = messageQueue.get(i) + messageDelim;
+				String message = messageQueue.get(i).getText() + messageDelim;
 				byteCount += message.getBytes().length;
 				
 				if (byteCount > Connection.MAX_READ_SIZE && i > (lastToken)) { // you can't send more messages due to the byte limit
@@ -66,6 +69,8 @@ public class ChatSession {
 		Log.i("session", "client joined, id = " + c.getId());
 		connectedClients.add(c);
 	}
+
+    public List<UUID> getMessageIDs() { return messageIDs; }
 	
 	// Call this from the worker when the connection closes
 	public void clientLeave(Client c) {
@@ -81,7 +86,8 @@ public class ChatSession {
 	public ChatSession(){
 		id_counter = 1000;
 		connectedClients = new ArrayList<Client>();
-		messageQueue = new ArrayList<String>();
+		messageQueue = new ArrayList<ChatMessage>();
+        messageIDs = new ArrayList<UUID>();
 	}
 	
 }

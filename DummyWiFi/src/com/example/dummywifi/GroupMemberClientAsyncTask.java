@@ -118,18 +118,16 @@ public class GroupMemberClientAsyncTask implements Runnable {
                 }
 
                 if ((readString = connection.receiveString()) != null) {
-                    //Log.d("message", "message received");
-
-                    //Log.d("message", "received message: " + readString);
 
                     if (readString.getType() == ChatMessage.Types.COMMAND) {
                         // it's a command
                         String[] args = readString.getText().split("\\s+");
                         runCommand(args[0], args);
-                    } else {
+                    } else if (!session.getMessageIDs().contains(readString)){
                         // it's a message
                         // put it in the message queue
-                        session.queueMessage(client.getUserName() + ": " + readString.getText());
+                        readString.setText(client.getUserName() + ": " + readString.getText());
+                        session.queueMessage(readString);
                         Log.d("message", "put '" + readString.getText() + "' into the message queue");
                     }
                 }
