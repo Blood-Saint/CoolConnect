@@ -49,14 +49,14 @@ public class GroupMemberClientAsyncTask implements Runnable {
 	public static int GMCAT_NEW_MESSAGE = 101;
 	
 	private Activity mainActivity, chatActivity;
-	private List<String> messagesToSend;
+	private List<ChatMessage> messagesToSend;
 	private Connection connection;
 
 	public GroupMemberClientAsyncTask(Activity mainActivity, Client client, ChatSession session) {
         this.client = client;
         this.session = session;
 		this.mainActivity = mainActivity;
-		this.messagesToSend = new ArrayList<String>();
+		this.messagesToSend = new ArrayList<ChatMessage>();
 	}
 
 
@@ -75,7 +75,7 @@ public class GroupMemberClientAsyncTask implements Runnable {
         }
     }
 
-	public synchronized void queueMessageToSend(String message) { // called from chatactivity when you push send
+	public synchronized void queueMessageToSend(ChatMessage message) { // called from chatactivity when you push send
 		messagesToSend.add(message);
 	}
 
@@ -83,7 +83,7 @@ public class GroupMemberClientAsyncTask implements Runnable {
 	public void run() {
         ChatMessage readString = null;
         int lastToken = 0;
-        StringBuffer messages = new StringBuffer();
+        ChatMessage messages = null;
 
 		try {
                 connection = client.getConnection();
@@ -110,9 +110,9 @@ public class GroupMemberClientAsyncTask implements Runnable {
                     //Log.d("gowat", "new messages! requested with token: " + lastToken + " and received a new token: " + result);
                     lastToken = result;
                     // star messages by this client, so it knows what side to display them on
-                    String userNameStarred = messages.toString().replace(client.getUserName(), "*" + client.getUserName());
-                    connection.sendNamedText(userNameStarred);
-                    messages = new StringBuffer();
+                    messages.setText( "*" + client.getUserName() + messages.getText());
+                    connection.sendNamedText(messages);
+                    messages = null;
                 } else {
                     //Log.d("gowat", "no new messages. token: " + lastToken);
                 }
@@ -143,7 +143,7 @@ public class GroupMemberClientAsyncTask implements Runnable {
 
 
                 if (messagesToSend.size() > 0) {
-                    for (String message : messagesToSend) {
+                    for (ChatMessage message : messagesToSend) {
                         connection.sendText(message);
                     }
                     messagesToSend.clear();

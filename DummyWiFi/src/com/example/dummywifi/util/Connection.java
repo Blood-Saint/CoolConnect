@@ -109,8 +109,7 @@ public class Connection {
     }
 
 	// wrapper for sending text
-	public boolean sendText(String text) {
-        ChatMessage message = new ChatMessage(text);
+	public boolean sendText(ChatMessage message) {
         ackManager.messageSent(message);
         return sendMessage(message);
 	}
@@ -119,11 +118,10 @@ public class Connection {
      * This function is only called by the chat owner, it is a workaround for the fact
      * that we are "sending" all messages to ourself in order to write messages
      * to the UI for display with username.
-     * @param text message text WITH USERNAME
+     * @param //text message text WITH USERNAME
      * @return
      */
-    public boolean sendNamedText(String text) {
-        ChatMessage message = new ChatMessage(text);
+    public boolean sendNamedText(ChatMessage message) {
         // don't bother telling ackmgr about this, we aren't expecting any acks
         return sendMessage(message);
     }

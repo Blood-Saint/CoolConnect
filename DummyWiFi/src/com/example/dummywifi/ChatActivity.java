@@ -29,6 +29,7 @@ import com.example.dummywifi.XUtil;
 import com.example.dummywifi.ConnectionInfo;
 import com.example.dummywifi.UI.DiscussArrayAdapter;
 import com.example.dummywifi.UI.TextBubble;
+import com.example.dummywifi.models.ChatMessage;
 
 public class ChatActivity extends Activity {
 	public Handler handler;
@@ -79,7 +80,7 @@ public class ChatActivity extends Activity {
                 	listView.setSelection((arrayAdapter.getCount()) - 1);
                 	editText.setText("");*/
                 	if (gmcat != null) {
-                		gmcat.queueMessageToSend(editText.getText().toString());
+                		gmcat.queueMessageToSend(new ChatMessage(editText.getText().toString()));
                 		editText.setText("");
                 	}
                 	

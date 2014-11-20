@@ -41,21 +41,11 @@ public class ChatSession {
 
 	}
 	//get rid of delimiter and queuebuffer and return an array of strings
-	public int fetchMessages(int lastToken, StringBuffer queueBuffer) {
+	public int fetchMessages(int lastToken, ChatMessage queueBuffer) {
 		if (lastToken < messageQueue.size()) { // retrieve messages until you have the current message
-			int i, byteCount = 0;
+			queueBuffer = messageQueue.get(lastToken);
 
-			for (i = lastToken; i < messageQueue.size(); i++) {
-				String message = messageQueue.get(i).getText() + messageDelim;
-				byteCount += message.getBytes().length;
-
-				if (byteCount > Connection.MAX_READ_SIZE && i > (lastToken)) { // you can't send more messages due to the byte limit
-					return i;
-				}
-				queueBuffer.append(message);
-			}
-
-			return i;
+            return ++lastToken;
 		}
 		return lastToken;
 	}

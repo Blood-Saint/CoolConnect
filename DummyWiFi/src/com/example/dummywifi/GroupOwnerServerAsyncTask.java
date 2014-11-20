@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.example.dummywifi.Messenger.ChatSession;
+import com.example.dummywifi.models.ChatMessage;
 import com.example.dummywifi.models.Client;
 import com.example.dummywifi.util.Connection;
 
@@ -47,8 +48,8 @@ public class GroupOwnerServerAsyncTask implements Runnable {
         this.startingAddress = address;
         this.mainActivity = mainActivity;
     	session = new ChatSession();
-    	session.queueMessage("Welcome to Spot!");
-    	session.queueMessage("Start typing below to send a message.");
+    	session.queueMessage(new ChatMessage("Welcome to Spot!"));
+    	session.queueMessage(new ChatMessage("Start typing below to send a message."));
         memberList = new ArrayList<GroupMemberClientAsyncTask>();
 
     }
@@ -94,10 +95,10 @@ public class GroupOwnerServerAsyncTask implements Runnable {
             SocketAddress myAddress = new InetSocketAddress(8888);
             connectTo(startingAddress);
 
-            // Also connect to ourselves if we are not the first member of the group
-            if (startingAddress != myAddress) {
-                connectTo(myAddress);
-            }
+//            // Also connect to ourselves if we are not the first member of the group
+//            if (startingAddress != myAddress) {
+//                connectTo(myAddress);
+//            }
 
             while (!serverSocket.isClosed()) { // shouldn't happen unless maybe the wifi gets turned off
             	// keep waiting for clients to come, then accept them and make a worker for them
