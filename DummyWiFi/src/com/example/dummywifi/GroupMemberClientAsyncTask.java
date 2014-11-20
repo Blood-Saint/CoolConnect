@@ -114,8 +114,8 @@ public class GroupMemberClientAsyncTask implements Runnable {
                     connection.sendNamedText(messages);
                     messages = null;
                 }
-//!session.getMessageIDs().contains(readString.getId())
-                if ((readString = connection.receiveString()) != null) {
+//
+                if ((readString = connection.receiveString()) != null && !session.getMessageIDs().contains(readString.getId())) {
 
                     if (readString.getType() == ChatMessage.Types.COMMAND) {
                         // it's a command
