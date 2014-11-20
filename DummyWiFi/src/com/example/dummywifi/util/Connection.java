@@ -147,6 +147,9 @@ public class Connection {
                 case COMMAND:
                     ackManager.messageReceived(message.getId());
                     return message;
+                case INITIAL:
+                    ackManager.messageReceived(message.getId());
+                    return message;
             }
         }
         return null;
