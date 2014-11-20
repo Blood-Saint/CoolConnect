@@ -12,7 +12,7 @@ public class ChatMessage implements Serializable{
     public enum Types {MESSAGE,ACK,COMMAND,INITIAL};
 
     private String text;
-    private final Types type;
+    private Types type;
     private final UUID id;
     private final long timestamp;
 
@@ -43,6 +43,8 @@ public class ChatMessage implements Serializable{
     {
     	return type;
     }
+
+    public void setType(Types nType) { type = nType; }
 
     public UUID getId() { return id; }
 

@@ -124,7 +124,8 @@ public class GroupMemberClientAsyncTask implements Runnable {
                     } else if (readString.getType() == ChatMessage.Types.INITIAL){
                         // it's a message
                         // put it in the message queue
-                        readString = new ChatMessage(client.getUserName() + ": " + readString.getText(), ChatMessage.Types.MESSAGE);
+                        readString.setText(client.getUserName() + ": " + readString.getText());
+                        readString.setType(ChatMessage.Types.MESSAGE);
                         session.queueMessage(readString);
                         Log.d("message", "put '" + readString.getText() + "' into the message queue");
                         Message newChatMessage = new Message();
