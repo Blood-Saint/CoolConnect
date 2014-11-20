@@ -80,7 +80,7 @@ public class ChatActivity extends Activity {
                 	listView.setSelection((arrayAdapter.getCount()) - 1);
                 	editText.setText("");*/
                 	if (gmcat != null) {
-                		gmcat.queueMessageToSend(new ChatMessage(editText.getText().toString()));
+                		gmcat.queueMessageToSend(new ChatMessage(editText.getText().toString(), ChatMessage.Types.INITIAL));
                 		editText.setText("");
                 	}
                 	

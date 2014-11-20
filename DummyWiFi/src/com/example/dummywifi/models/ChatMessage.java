@@ -9,7 +9,7 @@ import java.util.UUID;
  */
 public class ChatMessage implements Serializable{
     private static final long serialVersionUID = -5967900946938355970L;
-    public enum Types {MESSAGE,ACK,COMMAND};
+    public enum Types {MESSAGE,ACK,COMMAND,INITIAL};
 
     private String text;
     private final Types type;

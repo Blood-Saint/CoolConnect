@@ -103,32 +103,43 @@ public class GroupMemberClientAsyncTask implements Runnable {
                 ((ChatActivity) ChatActivity.currentChatActivity).gmcat = this;
 
 			while (connection.isOpen()) {
+                int oldToken = lastToken;
+                messages = session.fetchMessages(lastToken);
 
-                int result = session.fetchMessages(lastToken, messages);
-
-                if (result != lastToken) { // there are new messages, send them to the client
-                    Log.d("gowat", "new messages! requested with token: " + lastToken + " and received a new token: " + result);
-                    lastToken = result;
+                if (messages != null) { // there are new messages, send them to the client
+                    ++lastToken;
+                    Log.d("gowat", "new messages! requested with token: " + oldToken + " and received a new token: " + lastToken);
                     // star messages by this client, so it knows what side to display them on
                     //messages.setText( "*" + client.getUserName() + messages.getText());
                     connection.sendNamedText(messages);
                     messages = null;
-                } else {
-                    //Log.d("gowat", "no new messages. token: " + lastToken);
                 }
-
+//!session.getMessageIDs().contains(readString.getId())
                 if ((readString = connection.receiveString()) != null) {
 
                     if (readString.getType() == ChatMessage.Types.COMMAND) {
                         // it's a command
                         String[] args = readString.getText().split("\\s+");
                         runCommand(args[0], args);
-                    } else if (!session.getMessageIDs().contains(readString.getId())){
+                    } else if (readString.getType() != ChatMessage.Types.INITIAL){
                         // it's a message
                         // put it in the message queue
                         readString.setText(client.getUserName() + ": " + readString.getText());
                         session.queueMessage(readString);
                         Log.d("message", "put '" + readString.getText() + "' into the message queue");
+                        Message newChatMessage = new Message();
+                        newChatMessage.what = GroupMemberClientAsyncTask.GMCAT_NEW_MESSAGE;
+                        newChatMessage.obj = readString.getText();
+
+                        ((ChatActivity) ChatActivity.currentChatActivity).handler.sendMessage(newChatMessage);
+                    } else {
+                        session.queueMessage(readString);
+                        Message newChatMessage = new Message();
+                        newChatMessage.what = GroupMemberClientAsyncTask.GMCAT_NEW_MESSAGE;
+                        newChatMessage.obj = readString.getText();
+
+                        ((ChatActivity) ChatActivity.currentChatActivity).handler.sendMessage(newChatMessage);
+
                     }
                 }
                 try {
@@ -150,23 +161,6 @@ public class GroupMemberClientAsyncTask implements Runnable {
                 }
                 //connection.sendText("hello");
                 //Thread.sleep(750);
-
-                ChatMessage newMessages = null;
-                if ((newMessages = connection.receiveString()) != null) {
-                    Log.d("message", "Client received message: " + newMessages.getText());
-                    String[] recievedMessages = newMessages.getText().split(ChatSession.messageDelim);
-                    Log.d("message", "actual message count: " + recievedMessages.length);
-                    for (String message : recievedMessages) {
-                        // This block will move to the gmcat. Right now the gmcat is being used for testing sending "hello" over and over
-                        // but that work will be moved to another thread spawned when the send button is pushed
-                        Message newChatMessage = new Message();
-                        newChatMessage.what = GroupMemberClientAsyncTask.GMCAT_NEW_MESSAGE;
-                        newChatMessage.obj = message;
-
-                        ((ChatActivity) ChatActivity.currentChatActivity).handler.sendMessage(newChatMessage);
-                    }
-                    // -- end block
-                }
 
 			}
 			

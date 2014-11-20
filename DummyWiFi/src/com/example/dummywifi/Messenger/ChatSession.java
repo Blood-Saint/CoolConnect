@@ -41,13 +41,11 @@ public class ChatSession {
 
 	}
 	//get rid of delimiter and queuebuffer and return an array of strings
-	public int fetchMessages(int lastToken, ChatMessage queueBuffer) {
+	public ChatMessage fetchMessages(int lastToken) {
 		if (lastToken < messageQueue.size()) { // retrieve messages until you have the current message
-			queueBuffer = messageQueue.get(lastToken);
-
-            return lastToken + 1;
+			return messageQueue.get(lastToken);
 		}
-		return lastToken;
+		return null;
 	}
 
 	public List<Client> getConnectedClients() {
