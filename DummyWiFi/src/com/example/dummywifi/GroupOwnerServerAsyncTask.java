@@ -95,10 +95,11 @@ public class GroupOwnerServerAsyncTask implements Runnable {
             SocketAddress myAddress = new InetSocketAddress(8888);
             connectTo(startingAddress);
 
-//            // Also connect to ourselves if we are not the first member of the group
-//            if (startingAddress != myAddress) {
-//                connectTo(myAddress);
-//            }
+            // Also connect to ourselves if we are not the first member of the group
+            // >>>>>>>>>>>>>>>>Doesn't seem to actually work<<<<<<<<<<<<<<<<<<<<<<
+            if (startingAddress != myAddress) {
+                connectTo(myAddress);
+            }
 
             while (!serverSocket.isClosed()) { // shouldn't happen unless maybe the wifi gets turned off
             	// keep waiting for clients to come, then accept them and make a worker for them
