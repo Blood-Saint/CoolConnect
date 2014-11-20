@@ -45,7 +45,7 @@ public class ChatSession {
 		if (lastToken < messageQueue.size()) { // retrieve messages until you have the current message
 			queueBuffer = messageQueue.get(lastToken);
 
-            return ++lastToken;
+            return lastToken + 1;
 		}
 		return lastToken;
 	}

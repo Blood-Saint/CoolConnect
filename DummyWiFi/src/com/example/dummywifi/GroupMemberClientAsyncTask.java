@@ -107,10 +107,10 @@ public class GroupMemberClientAsyncTask implements Runnable {
                 int result = session.fetchMessages(lastToken, messages);
 
                 if (result != lastToken) { // there are new messages, send them to the client
-                    //Log.d("gowat", "new messages! requested with token: " + lastToken + " and received a new token: " + result);
+                    Log.d("gowat", "new messages! requested with token: " + lastToken + " and received a new token: " + result);
                     lastToken = result;
                     // star messages by this client, so it knows what side to display them on
-                    messages.setText( "*" + client.getUserName() + messages.getText());
+                    //messages.setText( "*" + client.getUserName() + messages.getText());
                     connection.sendNamedText(messages);
                     messages = null;
                 } else {
