@@ -63,7 +63,12 @@ public class GroupOwnerServerAsyncTask implements Runnable {
 
     }
 
-    public void connectTo(SocketAddress targetAddress)
+    /**
+     * Call this when connecting to a new node
+     * @param targetAddress
+     * @return GMCAT, only useful for the initial connection to yourself
+     */
+    public GroupMemberClientAsyncTask connectTo(SocketAddress targetAddress)
     {
         Socket socket = new Socket();
         //Connection connection = null;
@@ -92,14 +97,12 @@ public class GroupOwnerServerAsyncTask implements Runnable {
         try {
             serverSocket = new ServerSocket(8888); //8888
             Log.d("netcode", "Server: Socket opened");
-            SocketAddress myAddress = new InetSocketAddress(8888);
+
+            ((ChatActivity) ChatActivity.currentChatActivity).gmcat = connectTo(new InetSocketAddress(8888));
+
+            // TODO this will go away when we do mesh connections
             connectTo(startingAddress);
 
-            // Also connect to ourselves if we are not the first member of the group
-            // >>>>>>>>>>>>>>>>Doesn't seem to actually work<<<<<<<<<<<<<<<<<<<<<<
-            if (startingAddress != myAddress) {
-                connectTo(myAddress);
-            }
 
             while (!serverSocket.isClosed()) { // shouldn't happen unless maybe the wifi gets turned off
             	// keep waiting for clients to come, then accept them and make a worker for them

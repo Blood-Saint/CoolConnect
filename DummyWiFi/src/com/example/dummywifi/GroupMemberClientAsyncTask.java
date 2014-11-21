@@ -100,7 +100,6 @@ public class GroupMemberClientAsyncTask implements Runnable {
                 while (ChatActivity.currentChatActivity == null) {
                     Thread.sleep(10);
                 }
-                ((ChatActivity) ChatActivity.currentChatActivity).gmcat = this;
 
 			while (connection.isOpen()) {
                 int oldToken = lastToken;
