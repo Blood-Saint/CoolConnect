@@ -104,9 +104,8 @@ public class GroupMemberClientAsyncTask implements Runnable {
 
 			while (connection.isOpen()) {
                 int oldToken = lastToken;
-                messages = session.fetchMessages(lastToken);
 
-                if (messages != null) { // there are new messages, send them to the client
+                while ((messages = session.fetchMessages(lastToken)) != null) { // there are new messages, send them to the client
                     ++lastToken;
                     Log.d("gowat", "new messages! requested with token: " + oldToken + " and received a new token: " + lastToken);
                     // star messages by this client, so it knows what side to display them on
@@ -124,8 +123,7 @@ public class GroupMemberClientAsyncTask implements Runnable {
                     } else if (readString.getType() == ChatMessage.Types.INITIAL){
                         // it's a message
                         // put it in the message queue
-                        readString.setText(client.getUserName() + ": " + readString.getText());
-                        readString.setType(ChatMessage.Types.MESSAGE);
+                        readString = new ChatMessage(client.getUserName() + ": " + readString.getText(), ChatMessage.Types.MESSAGE);
                         session.queueMessage(readString);
                         Log.d("message", "put '" + readString.getText() + "' into the message queue");
                         Message newChatMessage = new Message();
