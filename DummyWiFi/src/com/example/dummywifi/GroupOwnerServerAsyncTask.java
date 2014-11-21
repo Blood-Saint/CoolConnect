@@ -84,8 +84,10 @@ public class GroupOwnerServerAsyncTask implements Runnable {
             memberList.add(target);
             Thread serverClientThread = new Thread(target);
             serverClientThread.start();
+            return target;
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
 
     }
