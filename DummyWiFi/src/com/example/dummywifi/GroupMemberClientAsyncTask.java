@@ -114,31 +114,33 @@ public class GroupMemberClientAsyncTask implements Runnable {
                     messages = null;
                 }
 //
-                if ((readString = connection.receiveString()) != null && !session.getMessageIDs().contains(readString.getId())) {
+                while ((readString = connection.receiveString()) != null) {
+                    if (!session.getMessageIDs().contains(readString.getId())) {
 
-                    if (readString.getType() == ChatMessage.Types.COMMAND) {
-                        // it's a command
-                        String[] args = readString.getText().split("\\s+");
-                        runCommand(args[0], args);
-                    } else if (readString.getType() == ChatMessage.Types.INITIAL){
-                        // it's a message
-                        // put it in the message queue
-                        readString = new ChatMessage(client.getUserName() + ": " + readString.getText(), ChatMessage.Types.MESSAGE);
-                        session.queueMessage(readString);
-                        Log.d("message", "put '" + readString.getText() + "' into the message queue");
-                        Message newChatMessage = new Message();
-                        newChatMessage.what = GroupMemberClientAsyncTask.GMCAT_NEW_MESSAGE;
-                        newChatMessage.obj = readString.getText();
+                        if (readString.getType() == ChatMessage.Types.COMMAND) {
+                            // it's a command
+                            String[] args = readString.getText().split("\\s+");
+                            runCommand(args[0], args);
+                        } else if (readString.getType() == ChatMessage.Types.INITIAL) {
+                            // it's a message
+                            // put it in the message queue
+                            readString = new ChatMessage(client.getUserName() + ": " + readString.getText(), ChatMessage.Types.MESSAGE);
+                            session.queueMessage(readString);
+                            Log.d("message", "put '" + readString.getText() + "' into the message queue");
+                            Message newChatMessage = new Message();
+                            newChatMessage.what = GroupMemberClientAsyncTask.GMCAT_NEW_MESSAGE;
+                            newChatMessage.obj = readString.getText();
 
-                        ((ChatActivity) ChatActivity.currentChatActivity).handler.sendMessage(newChatMessage);
-                    } else {
-                        session.queueMessage(readString);
-                        Message newChatMessage = new Message();
-                        newChatMessage.what = GroupMemberClientAsyncTask.GMCAT_NEW_MESSAGE;
-                        newChatMessage.obj = readString.getText();
+                            ((ChatActivity) ChatActivity.currentChatActivity).handler.sendMessage(newChatMessage);
+                        } else {
+                            session.queueMessage(readString);
+                            Message newChatMessage = new Message();
+                            newChatMessage.what = GroupMemberClientAsyncTask.GMCAT_NEW_MESSAGE;
+                            newChatMessage.obj = readString.getText();
 
-                        ((ChatActivity) ChatActivity.currentChatActivity).handler.sendMessage(newChatMessage);
+                            ((ChatActivity) ChatActivity.currentChatActivity).handler.sendMessage(newChatMessage);
 
+                        }
                     }
                 }
                 try {
