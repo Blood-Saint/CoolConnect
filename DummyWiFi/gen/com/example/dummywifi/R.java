@@ -36,12 +36,13 @@ public final class R {
         public static final int atn_direct_discover=0x7f090002;
         public static final int atn_direct_enable=0x7f090008;
         public static final int button1=0x7f090006;
+        public static final int button2=0x7f090009;
         public static final int comment=0x7f090005;
         public static final int editText1=0x7f090004;
         public static final int list=0x7f090001;
         public static final int listView1=0x7f090007;
         public static final int send=0x7f090003;
-        public static final int wrapper=0x7f090009;
+        public static final int wrapper=0x7f09000a;
     }
     public static final class layout {
         public static final int activity_chat=0x7f030000;

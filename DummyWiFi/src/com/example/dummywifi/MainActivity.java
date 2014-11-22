@@ -38,6 +38,8 @@ import java.lang.Math;
 
 public class MainActivity extends Activity {
 	
+	public static String username = "Chad";
+	
 	public  ListView listView;
 	//private ListView newView;
 	private ArrayAdapter<String> arrayAdapter;
@@ -352,5 +354,12 @@ public class MainActivity extends Activity {
     
     public Channel getChannel(){
     	return mChannel;
+    }
+    
+    public void makeName(View v){
+    	Editable textbox = editText1.getText();
+//    	Toast.makeText(MainActivity.this, textbox.toString(),
+//				Toast.LENGTH_SHORT).show();
+    	username = textbox.toString();
     }
 }
