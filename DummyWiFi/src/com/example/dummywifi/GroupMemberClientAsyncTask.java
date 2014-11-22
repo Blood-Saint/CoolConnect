@@ -81,6 +81,8 @@ public class GroupMemberClientAsyncTask implements Runnable {
 
 	@Override
 	public void run() {
+
+
         ChatMessage readString = null;
         int lastToken = 0;
         ChatMessage messages = null;
@@ -146,7 +148,18 @@ public class GroupMemberClientAsyncTask implements Runnable {
                 }
 
 
+                if(((ChatActivity)ChatActivity.currentChatActivity).gmcat != this)
+                {
+                    if (!client.getConnection().isOpen())
+                    {
+                        Log.d("netcode", "SERVER CLOSED");
+                    }
+                    else
+                    {
+                        Log.d("netcod", "SERVER OPEN");
+                    }
 
+                }
 
                 if (messagesToSend.size() > 0) {
                     for (ChatMessage message : messagesToSend) {

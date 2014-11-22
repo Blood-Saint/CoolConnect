@@ -125,6 +125,7 @@ public class GroupOwnerServerAsyncTask implements Runnable {
             while (!serverSocket.isClosed()) { // shouldn't happen unless maybe the wifi gets turned off
             	// keep waiting for clients to come, then accept them and make a worker for them
 
+
 	            Socket clientSocket = serverSocket.accept();
 	            
 	            Log.d("netcode", "Server: a connection with a client has been established");
