@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -100,7 +101,22 @@ public class GroupOwnerServerAsyncTask implements Runnable {
             serverSocket = new ServerSocket(8888); //8888
             Log.d("netcode", "Server: Socket opened");
 
-            ((ChatActivity) ChatActivity.currentChatActivity).gmcat = connectTo(new InetSocketAddress(8888));
+            GroupMemberClientAsyncTask myClient = connectTo(new InetSocketAddress(8888));
+            Connection myConnection = myClient.client.getConnection();
+
+            myConnection.sendCommand("joingroup");
+            Message msg = new Message();
+            msg.what = GroupMemberClientAsyncTask.GMCAT_JOIN_MESSAGE;
+            ((MainActivity) mainActivity).handler.sendMessage(msg);
+
+            // Don't ask.
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            ((ChatActivity)ChatActivity.currentChatActivity).gmcat = myClient;
 
             // TODO this will go away when we do mesh connections
             connectTo(startingAddress);

@@ -31,7 +31,7 @@ import android.util.Log;
 
 public class GroupMemberClientAsyncTask implements Runnable {
 
-    private Client client;
+    public Client client;
     private ChatSession session;
 
 
@@ -87,11 +87,6 @@ public class GroupMemberClientAsyncTask implements Runnable {
 
 		try {
                 connection = client.getConnection();
-
-                connection.sendCommand("joingroup");
-                Message msg = new Message();
-                msg.what = GMCAT_JOIN_MESSAGE;
-                ((MainActivity) mainActivity).handler.sendMessage(msg);
 
                 Thread.sleep(500);
                 //socket.getOutputStream().write("!joingroup".getBytes());
