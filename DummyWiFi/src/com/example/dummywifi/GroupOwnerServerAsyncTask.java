@@ -111,7 +111,7 @@ public class GroupOwnerServerAsyncTask implements Runnable {
 
             // Don't ask.
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
