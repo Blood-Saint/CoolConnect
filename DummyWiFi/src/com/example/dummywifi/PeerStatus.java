@@ -30,6 +30,8 @@ public class PeerStatus implements PeerListListener {
 		peerList = peers;		
 		Log.i("netcode", "You have " + nPeers + " available.");
 		
+		MainActivity.configItems.clear();
+		
 		for (WifiP2pDevice d : peerList.getDeviceList()) {
 			Log.i("netcode", "Found peer: " + d.deviceName + " (" + d.deviceAddress + ")");
 			
@@ -39,9 +41,9 @@ public class PeerStatus implements PeerListListener {
 	            config.deviceAddress = d.deviceAddress;
 	            config.wps.setup = WpsInfo.PBC;
 				MainActivity.configItems.add(config);
-				
 			}
 		}
+		MainActivity.updateList();
 	}
 	
 	public PeerStatus() {

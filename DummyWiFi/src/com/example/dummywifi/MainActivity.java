@@ -42,10 +42,11 @@ public class MainActivity extends Activity {
 	
 	public  ListView listView;
 	//private ListView newView;
-	private ArrayAdapter<String> arrayAdapter;
+	private static ArrayAdapter<String> arrayAdapter;
 	private EditText editText1;
 	public static ArrayList<String> listItems=new ArrayList<String>();
 	public static ArrayList<WifiP2pConfig> configItems=new ArrayList<WifiP2pConfig>();
+	public static ArrayList<String> groups= new ArrayList<String>();
 	
 	public int clickCount = 0; 
 	
@@ -124,6 +125,28 @@ public class MainActivity extends Activity {
         //Stops the keypad from automatically coming up on app start. 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         
+        
+    	mManager.discoverPeers(mChannel, new WifiP2pManager.ActionListener() {
+
+    		@Override
+    		public void onSuccess() {
+//    			for(int i = 0; i<configItems.size();i++){
+//    	      	  	listItems.add(configItems.get(i).deviceAddress);
+//    	        		arrayAdapter.notifyDataSetChanged();
+//    	        		Log.i("netcode","Device address is oooh:" + configItems.get(i).deviceAddress);
+//    	        }
+    			Toast.makeText(MainActivity.this, "Discovery Initiated",
+    					Toast.LENGTH_SHORT).show();
+    		}
+
+    		@Override
+    		public void onFailure(int reasonCode) {
+    			Toast.makeText(MainActivity.this, "Discovery Failed : " + reasonCode,
+    					Toast.LENGTH_SHORT).show();
+    		}
+        
+    	});
+        
         p2pbutt.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -145,7 +168,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
             	listItems.clear();
             	arrayAdapter.notifyDataSetChanged();
-//            	configItems.clear();
+            	configItems.clear();
             	
             	if (!isWifiP2pEnabled) {
                     Toast.makeText(MainActivity.this, R.string.p2p_off_warning,
@@ -155,11 +178,11 @@ public class MainActivity extends Activity {
 
     	    		@Override
     	    		public void onSuccess() {
-    	    			for(int i = 0; i<configItems.size();i++){
-    	    	      	  	listItems.add(configItems.get(i).deviceAddress);
-    	    	        		arrayAdapter.notifyDataSetChanged();
-    	    	        		Log.i("netcode","Device address is oooh:" + configItems.get(i).deviceAddress);
-    	    	        }
+//    	    			for(int i = 0; i<configItems.size();i++){
+//    	    	      	  	listItems.add(configItems.get(i).deviceAddress);
+//    	    	        		arrayAdapter.notifyDataSetChanged();
+//    	    	        		Log.i("netcode","Device address is oooh:" + configItems.get(i).deviceAddress);
+//    	    	        }
     	    			Toast.makeText(MainActivity.this, "Discovery Initiated",
     	    					Toast.LENGTH_SHORT).show();
     	    		}
@@ -361,5 +384,17 @@ public class MainActivity extends Activity {
 //    	Toast.makeText(MainActivity.this, textbox.toString(),
 //				Toast.LENGTH_SHORT).show();
     	username = textbox.toString();
+    	Toast.makeText(MainActivity.this, username,
+				Toast.LENGTH_SHORT).show();
     }
+
+	public static void updateList() {
+		listItems.clear();
+    	arrayAdapter.notifyDataSetChanged();
+    	for(int i = 0; i<configItems.size();i++){
+      	  	listItems.add(configItems.get(i).deviceAddress);
+      		arrayAdapter.notifyDataSetChanged();
+      		Log.i("netcode","Device address is oooh:" + configItems.get(i).deviceAddress);
+        }
+	}
 }
