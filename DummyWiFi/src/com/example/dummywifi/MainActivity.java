@@ -46,7 +46,7 @@ public class MainActivity extends Activity {
 	private EditText editText1;
 	public static ArrayList<String> listItems=new ArrayList<String>();
 	public static ArrayList<WifiP2pConfig> configItems=new ArrayList<WifiP2pConfig>();
-	public static ArrayList<String> groups= new ArrayList<String>();
+	public static ArrayList<String> names= new ArrayList<String>();
 	
 	public int clickCount = 0; 
 	
@@ -85,6 +85,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         
         arrayAdapter = new ArrayAdapter<String>(this, 
 		        android.R.layout.simple_list_item_1, listItems);
@@ -169,6 +170,7 @@ public class MainActivity extends Activity {
             	listItems.clear();
             	arrayAdapter.notifyDataSetChanged();
             	configItems.clear();
+            	names.clear();
             	
             	if (!isWifiP2pEnabled) {
                     Toast.makeText(MainActivity.this, R.string.p2p_off_warning,
@@ -283,43 +285,6 @@ public class MainActivity extends Activity {
         
     }//End On Create
 
-    //To be used with discovery later
-    public void fillList() throws InterruptedException{
-    	Thread t = new Thread()
-    	{
-    	    @Override
-    	    public void run() {
-    	    	mManager.discoverPeers(mChannel, new WifiP2pManager.ActionListener() {
-
-    	    		@Override
-    	    		public void onSuccess() {
-    	        		
-    	    			Toast.makeText(MainActivity.this, "Discovery Initiated",
-    	    					Toast.LENGTH_SHORT).show();
-    	    		}
-
-    	    		@Override
-    	    		public void onFailure(int reasonCode) {
-    	    			Toast.makeText(MainActivity.this, "Discovery Failed : " + reasonCode,
-    	    					Toast.LENGTH_SHORT).show();
-    	    		}
-    	        
-    	    	});
-    	    }
-    	};
-    	
-    	t.start();
-    	t.join();
-    	Toast.makeText(MainActivity.this, "fuck",
-				Toast.LENGTH_SHORT).show();
-    	for(int i = 0; i<configItems.size();i++){
-      	  	listItems.add(configItems.get(i).deviceAddress);
-        		arrayAdapter.notifyDataSetChanged();
-        		Log.i("netcode","Device address is oooh:" + configItems.get(i).deviceAddress);
-        	}
-
-	}
-
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -381,19 +346,17 @@ public class MainActivity extends Activity {
     
     public void makeName(View v){
     	Editable textbox = editText1.getText();
-//    	Toast.makeText(MainActivity.this, textbox.toString(),
-//				Toast.LENGTH_SHORT).show();
     	username = textbox.toString();
-    	Toast.makeText(MainActivity.this, username,
-				Toast.LENGTH_SHORT).show();
+    	Log.i("netcode","Username: " + username);
     }
 
 	public static void updateList() {
 		listItems.clear();
     	arrayAdapter.notifyDataSetChanged();
-    	for(int i = 0; i<configItems.size();i++){
-      	  	listItems.add(configItems.get(i).deviceAddress);
+    	for(int i = 0; i<names.size();i++){
+      	  	listItems.add(names.get(i));
       		arrayAdapter.notifyDataSetChanged();
+      		Log.i("netcode","Device name is oooh:" + names.get(i));
       		Log.i("netcode","Device address is oooh:" + configItems.get(i).deviceAddress);
         }
 	}

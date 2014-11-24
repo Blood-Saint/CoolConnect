@@ -16,19 +16,10 @@
         android:layout_alignLeft="@+id/comment"
         android:layout_below="@+id/comment"
         android:ems="10"
-        android:hint="Room name"
-		android:imeOptions="actionSend">
-    </EditText>
+        android:hint="Username"
+        android:imeOptions="actionSend" >
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/editText1"
-        android:layout_alignRight="@+id/listView1"
-        android:layout_toRightOf="@+id/editText1"
-        android:background="@drawable/btn_yellow"
-        android:text="Create" />
+    </EditText>
 
     <ListView
         android:id="@+id/list"
@@ -78,10 +69,20 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/editText1"
+        android:layout_alignBottom="@+id/editText1"
         android:layout_alignRight="@+id/atn_direct_discover"
-        android:layout_below="@+id/editText1"
-        android:text="Make Name"
         android:background="@drawable/btn_yellow"
-        android:onClick="makeName" />
+        android:onClick="makeName"
+        android:text="Set Name" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/atn_direct_discover"
+        android:layout_alignRight="@+id/atn_direct_discover"
+        android:background="@drawable/btn_yellow"
+        android:text="Create Room" />
 
 </RelativeLayout>

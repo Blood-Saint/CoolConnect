@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
+import android.view.WindowManager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.view.inputmethod.EditorInfo;
+
 import com.example.dummywifi.XUtil;
 import com.example.dummywifi.ConnectionInfo;
 import com.example.dummywifi.UI.DiscussArrayAdapter;
@@ -54,6 +56,7 @@ public class ChatActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chat);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		final EditText editText = (EditText) findViewById(R.id.send);
 		
         //This creates an instance of a WiFiP2pManager object
