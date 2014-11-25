@@ -47,15 +47,13 @@ public class GroupMemberClientAsyncTask implements Runnable {
 
 	public static int GMCAT_JOIN_MESSAGE = 100;
 	public static int GMCAT_NEW_MESSAGE = 101;
-	
-	private Activity mainActivity, chatActivity;
+
 	private List<ChatMessage> messagesToSend;
 	private Connection connection;
 
-	public GroupMemberClientAsyncTask(Activity mainActivity, Client client, ChatSession session) {
+	public GroupMemberClientAsyncTask( Client client, ChatSession session) {
         this.client = client;
         this.session = session;
-		this.mainActivity = mainActivity;
 		this.messagesToSend = new ArrayList<ChatMessage>();
 	}
 

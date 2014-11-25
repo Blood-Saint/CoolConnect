@@ -49,8 +49,7 @@ public class GroupOwnerServerAsyncTask implements Runnable {
         this.startingAddress = address;
         this.mainActivity = mainActivity;
     	session = new ChatSession();
-    	session.queueMessage(new ChatMessage("Welcome to CoolConnect!"));
-    	session.queueMessage(new ChatMessage("Start typing below to send a message."));
+    	session.queueMessage(new ChatMessage(MainActivity.username + "Connected to CoolConnect!"));
         memberList = new ArrayList<GroupMemberClientAsyncTask>();
 
     }
@@ -95,7 +94,7 @@ public class GroupOwnerServerAsyncTask implements Runnable {
             connection = new Connection(socket);
             Client client = new Client(connection, session.getNextId());
             client.setUserName("user" + new Random().nextInt(100));
-            GroupMemberClientAsyncTask target = new GroupMemberClientAsyncTask(mainActivity, client, session);
+            GroupMemberClientAsyncTask target = new GroupMemberClientAsyncTask(client, session);
             memberList.add(target);
             Thread serverClientThread = new Thread(target);
             serverClientThread.start();
@@ -149,7 +148,7 @@ public class GroupOwnerServerAsyncTask implements Runnable {
 	            Client client = new Client(connection, session.getNextId());
 	            client.setUserName("user" + new Random().nextInt(100));
 	           
-	            GroupMemberClientAsyncTask gowat = new GroupMemberClientAsyncTask(mainActivity, client, session);
+	            GroupMemberClientAsyncTask gowat = new GroupMemberClientAsyncTask(client, session);
                 memberList.add(gowat);
 	            Log.d("netcode", "Worker created, running it");
 	            
