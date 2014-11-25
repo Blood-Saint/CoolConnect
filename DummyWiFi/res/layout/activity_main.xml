@@ -92,7 +92,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/atn_direct_enable"
         android:background="@drawable/btn_yellow"
-        android:text="Auto Connect: On"
-        android:onClick="toggleAuto" />
+        android:onClick="toggleAuto"
+        android:text="Auto Connect: Off" />
 
 </RelativeLayout>
