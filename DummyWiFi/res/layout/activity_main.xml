@@ -55,17 +55,6 @@
         android:background="@drawable/btn_yellow" />
 
     <Button
-        android:id="@+id/atn_direct_discover"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/atn_direct_enable"
-        android:layout_below="@+id/atn_direct_enable"
-        android:icon="@drawable/ic_action_discover"
-        android:showAsAction="ifRoom|withText"
-        android:text="@string/discover_peers_button"
-        android:background="@drawable/btn_yellow" />
-
-    <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -77,12 +66,33 @@
         android:text="Set Name" />
 
     <Button
+        android:id="@+id/atn_direct_discover"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/list"
+        android:layout_below="@+id/button3"
+        android:background="@drawable/btn_yellow"
+        android:icon="@drawable/ic_action_discover"
+        android:showAsAction="ifRoom|withText"
+        android:text="@string/discover_peers_button" />
+
+    <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/atn_direct_discover"
-        android:layout_alignRight="@+id/atn_direct_discover"
+        android:layout_above="@+id/button3"
+        android:layout_alignRight="@+id/button2"
         android:background="@drawable/btn_yellow"
         android:text="Create Room" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/atn_direct_enable"
+        android:background="@drawable/btn_yellow"
+        android:text="Auto Connect: On"
+        android:onClick="toggleAuto" />
 
 </RelativeLayout>

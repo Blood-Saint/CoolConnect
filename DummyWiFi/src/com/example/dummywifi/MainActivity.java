@@ -40,6 +40,9 @@ public class MainActivity extends Activity {
 	
 	public static String username = "Chad";
 	
+	static boolean autoToggle = true;
+	static boolean connectionRequest = false;
+	
 	public  ListView listView;
 	//private ListView newView;
 	private static ArrayAdapter<String> arrayAdapter;
@@ -62,10 +65,12 @@ public class MainActivity extends Activity {
 	private boolean isWifiP2pEnabled = false;
 	
 	//Declare the WifiP2pManager
-	private WifiP2pManager mManager;
+	private static WifiP2pManager mManager;
 	
 	//Declare the Channel
-	private Channel mChannel;
+	private static Channel mChannel;
+
+	private static MainActivity currentMainActivity;
 
 	//We need to make a MyBroadCastReceiver to... receive broadcasts!?
 	BroadcastReceiver mReceiver;
@@ -167,6 +172,7 @@ public class MainActivity extends Activity {
         	// will use fillList later
             @Override
             public void onClick(View v) {
+            	connectionRequest=false;
             	listItems.clear();
             	arrayAdapter.notifyDataSetChanged();
             	configItems.clear();
@@ -282,7 +288,7 @@ public class MainActivity extends Activity {
         		}
         	}
         };
-        
+        MainActivity.currentMainActivity = this;
     }//End On Create
 
 	@Override
@@ -351,6 +357,7 @@ public class MainActivity extends Activity {
     }
 
 	public static void updateList() {
+		if (connectionRequest) return;
 		listItems.clear();
     	arrayAdapter.notifyDataSetChanged();
     	for(int i = 0; i<names.size();i++){
@@ -359,5 +366,55 @@ public class MainActivity extends Activity {
       		Log.i("netcode","Device name is oooh:" + names.get(i));
       		Log.i("netcode","Device address is oooh:" + configItems.get(i).deviceAddress);
         }
+    	if (!configItems.isEmpty() && autoToggle) autoConnect();
+	}
+
+	private static void autoConnect() {
+		// TODO Auto-generated method stub
+		connectionRequest = true;
+		WifiP2pConfig config = new WifiP2pConfig();
+		config.deviceAddress = configItems.get(0).deviceAddress;
+		config.wps.setup = WpsInfo.PBC;
+		
+		Log.i("netcode", "you clicked the listview item, connecting to:" + config.deviceAddress);
+		
+		if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        progressDialog = ProgressDialog.show(currentMainActivity, "Press back to cancel",
+                "Connecting to :" + config.deviceAddress, true, true
+//                new DialogInterface.OnCancelListener() {
+//
+//                    @Override
+//                    public void onCancel(DialogInterface dialog) {
+//                        ((DeviceActionListener) getActivity()).cancelDisconnect();
+//                    }
+//                }
+                );
+		
+		mManager.connect(mChannel, config, new ActionListener(){
+		
+			
+			@Override
+			public void onSuccess() {
+				// Don't start the chat intent until we get the socket open						
+			}
+			
+			@Override 
+			public void onFailure(int reasonCode) {
+				Log.i("netcode","Reason:" + reasonCode);
+			}
+			
+		});
+	}
+	
+	public void toggleAuto(View V){
+		autoToggle = !autoToggle;
+		Button p1_button = (Button)findViewById(R.id.button3);
+		if (autoToggle) p1_button.setText("Auto Connect: On");
+		else {
+			p1_button.setText("Auto Connect: Off");
+			connectionRequest = false;
+		}
 	}
 }
