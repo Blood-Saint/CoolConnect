@@ -49,7 +49,7 @@ public class GroupOwnerServerAsyncTask implements Runnable {
         this.startingAddress = address;
         this.mainActivity = mainActivity;
     	session = new ChatSession();
-    	session.queueMessage(new ChatMessage(MainActivity.username + "Connected to CoolConnect!"));
+    	session.queueMessage(new ChatMessage(MainActivity.username + " connected to CoolConnect!"));
         memberList = new ArrayList<GroupMemberClientAsyncTask>();
 
     }
