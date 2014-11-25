@@ -18,7 +18,7 @@ import com.example.dummywifi.models.ChatMessage;
  * Useful for sending & receiving data with less code & no need to understand sockets
 */
 public class Connection {
-	public static final int MAX_READ_SIZE = 2048;
+
 	
 	private final Socket connectionSocket;
     private ObjectInputStream inputStream = null;
@@ -49,7 +49,7 @@ public class Connection {
 	}
 	
 	public boolean isOpen() {
-		return (!connectionSocket.isClosed()) && connectionSocket.isConnected() && (!connectionSocket.isInputShutdown()) && (!connectionSocket.isOutputShutdown());
+		return (!connectionSocket.isClosed() && connectionSocket.isConnected() && (!connectionSocket.isInputShutdown()) && !connectionSocket.isOutputShutdown());
 	}
 
     protected synchronized boolean sendMessage(ChatMessage message) {

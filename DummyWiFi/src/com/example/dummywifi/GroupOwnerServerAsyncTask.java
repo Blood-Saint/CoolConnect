@@ -57,9 +57,23 @@ public class GroupOwnerServerAsyncTask implements Runnable {
 
     public void closeServer() {
         try {
+            for (GroupMemberClientAsyncTask member : memberList)
+            {
+                member.closeClient();
+            }
             serverSocket.close();
         } catch(IOException e) {
             Log.e("netcode", e.getMessage());
+        }
+
+    }
+
+    public Activity getMainActivity() { return mainActivity; }
+
+    public void closeClients() {
+        for (GroupMemberClientAsyncTask member : memberList)
+        {
+            member.closeClient();
         }
 
     }
@@ -117,6 +131,7 @@ public class GroupOwnerServerAsyncTask implements Runnable {
             }
 
             ((ChatActivity)ChatActivity.currentChatActivity).gmcat = myClient;
+            ((ChatActivity)ChatActivity.currentChatActivity).gosat = this;
 
             // TODO this will go away when we do mesh connections
             connectTo(startingAddress);
@@ -144,8 +159,7 @@ public class GroupOwnerServerAsyncTask implements Runnable {
 	            Log.d("netcode", "Worker thread started, status is: " + workerThread.getState());
 	                                   
             }
-            
-            serverSocket.close();
+
             return; 
         } catch (IOException e) {
             Log.e("netcode", e.getMessage());

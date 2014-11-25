@@ -98,7 +98,7 @@ public class GroupMemberClientAsyncTask implements Runnable {
                     Thread.sleep(10);
                 }
 
-			while (connection.isOpen()) {
+			while (connection != null && connection.isOpen()) {
                 int oldToken = lastToken;
 
                 while ((messages = session.fetchMessages(lastToken)) != null) { // there are new messages, send them to the client
@@ -109,8 +109,8 @@ public class GroupMemberClientAsyncTask implements Runnable {
                     connection.sendNamedText(messages);
                     messages = null;
                 }
-//
-                while ((readString = connection.receiveString()) != null) {
+
+                while (connection != null && (readString = connection.receiveString()) != null) {
                     if (!session.getMessageIDs().contains(readString.getId())) {
 
                         if (readString.getType() == ChatMessage.Types.COMMAND) {
@@ -147,33 +147,14 @@ public class GroupMemberClientAsyncTask implements Runnable {
                     e.printStackTrace();
                 }
 
-
-                if(((ChatActivity)ChatActivity.currentChatActivity).gmcat != this)
-                {
-                    if (!client.getConnection().isOpen())
-                    {
-                        Log.d("netcode", "SERVER CLOSED");
-                    }
-                    else
-                    {
-                        Log.d("netcod", "SERVER OPEN");
-                    }
-
-                }
-
                 if (messagesToSend.size() > 0) {
                     for (ChatMessage message : messagesToSend) {
                         connection.sendText(message);
                     }
                     messagesToSend.clear();
                 }
-                //connection.sendText("hello");
-                //Thread.sleep(750);
 
 			}
-			
-			//socket.getOutputStream().flush();
-			
 			
 
 		} catch (InterruptedException e) {
