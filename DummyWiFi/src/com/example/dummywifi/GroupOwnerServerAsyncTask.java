@@ -36,6 +36,7 @@ public class GroupOwnerServerAsyncTask implements Runnable {
     private ServerSocket serverSocket;
     private Activity mainActivity;
     private SocketAddress startingAddress;
+    private Boolean backup;
 
     List<GroupMemberClientAsyncTask> memberList;
 
@@ -51,13 +52,14 @@ public class GroupOwnerServerAsyncTask implements Runnable {
     	session = new ChatSession();
     	session.queueMessage(new ChatMessage(MainActivity.username + " connected to CoolConnect!"));
         memberList = new ArrayList<GroupMemberClientAsyncTask>();
-
+        backup = false;
     }
 
     public void closeServer() {
         try {
             for (GroupMemberClientAsyncTask member : memberList)
             {
+                member.client.getConnection().sendCommand("disconnect");
                 member.closeClient();
             }
             serverSocket.close();
@@ -154,6 +156,12 @@ public class GroupOwnerServerAsyncTask implements Runnable {
 	            
 	            Thread workerThread = new Thread(gowat);
 	            workerThread.start();
+
+                if (backup == false)
+                {
+                    client.getConnection().sendCommand("backup");
+                    backup = true;
+                }
 	            
 	            Log.d("netcode", "Worker thread started, status is: " + workerThread.getState());
 	                                   

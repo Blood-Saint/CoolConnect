@@ -1,14 +1,12 @@
 package com.example.dummywifi;
 
-import java.io.IOException;
-import java.net.Socket;
-import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Hashtable;
-import java.util.Random;
 
 import com.example.dummywifi.Messenger.ChatSession;
+import com.example.dummywifi.Messenger.MessengerCommands.HostDisconnectCommandExecutor;
+import com.example.dummywifi.Messenger.MessengerCommands.SetBackupCommandExecutor;
 import com.example.dummywifi.util.Connection;
 import com.example.dummywifi.models.ChatMessage;
 import com.example.dummywifi.Messenger.MessengerCommands.CommandExecutor;
@@ -16,8 +14,6 @@ import com.example.dummywifi.Messenger.MessengerCommands.JoinGroupCommandExecuto
 import com.example.dummywifi.Messenger.MessengerCommands.SetUsernameCommandExecutor;
 import com.example.dummywifi.models.Client;
 
-import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Message;
 import android.util.Log;
 
@@ -42,6 +38,8 @@ public class GroupMemberClientAsyncTask implements Runnable {
         // add commands to the command map as you implement them
         commandMap.put(SetUsernameCommandExecutor.COMMAND_MESSAGE, new SetUsernameCommandExecutor());
         commandMap.put(JoinGroupCommandExecutor.COMMAND_MESSAGE, new JoinGroupCommandExecutor());
+        commandMap.put(SetBackupCommandExecutor.COMMAND_MESSAGE, new SetBackupCommandExecutor());
+        commandMap.put(HostDisconnectCommandExecutor.COMMAND_MESSAGE, new HostDisconnectCommandExecutor());
     }
 
 

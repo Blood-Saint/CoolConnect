@@ -26,6 +26,8 @@ public class ChatSession {
 
 	private int id_counter;
 
+    private Boolean isBackup;
+
 
 	public static final int dispatchDelay = 750; // 750ms
 	public static final String messageDelim = "_&&_";
@@ -40,6 +42,10 @@ public class ChatSession {
 		messageQueue.clear();
 
 	}
+    public void setIsBackup(Boolean value) { isBackup = value; }
+
+    public Boolean getIsBackup() { return isBackup; }
+
 	//get rid of delimiter and queuebuffer and return an array of strings
 	public ChatMessage fetchMessages(int lastToken) {
 		if (lastToken < messageQueue.size()) { // retrieve messages until you have the current message
@@ -76,6 +82,7 @@ public class ChatSession {
 		connectedClients = new ArrayList<Client>();
 		messageQueue = new ArrayList<ChatMessage>();
         messageIDs = new ArrayList<UUID>();
+        isBackup = false;
 	}
 	
 }
