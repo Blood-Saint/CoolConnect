@@ -40,7 +40,7 @@ public class MainActivity extends Activity {
 	
 	public static String username = "Chad";
 	
-	static boolean autoToggle = true;
+	static boolean autoToggle = false;
 	static boolean connectionRequest = false;
 	
 	public  ListView listView;
