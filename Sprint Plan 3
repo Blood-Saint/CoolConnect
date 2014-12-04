@@ -1,0 +1,40 @@
+Sprint 3 Plan
+CoolConnect
+Maid of Fire
+Ends 11/26/14
+Revision: 11/11/14
+
+Goal: Have all phones automatically connect to each other, and have the mesh networking completed
+
+User Story 1: As a user, I want my phone to automatically connect to all other phones running CoolConnect so that I can join the mesh network.
+Task 1: Separate out discovery from UI code so that it runs in its own background thread. (6)
+Task 2: Discover initiation. (3)
+Task 3: Identify new peers when discovery list changes. (8)
+Task 4: When new peer is identified, set up the client thread and socket etc. (15)
+
+total - 32
+
+User Story 2: As a user I want a chat network to be as expansive and resilient as possible while
+still being solely peer-to-peer so I can have robust interactions without relying on a centralized system.
+Task 1: Merge together GOWAT/GOSAT with Client workers (12)
+Task 2: Implement mesh network message forwarding (15)
+Task 3: Ensure no duplicate messages are presented to the user (4)
+Task 4: Testing many different mesh scenarios (clients dropping in different topologies etc) (5)
+
+total- 36
+
+Roles:
+Kevin Gray - Network Developer
+Alex Krishnan- Network Developer
+Gabe Yanovsky- Executive Object Oriented Solution Synergist and Support Engineering Deliverable Deliverer
+Eric Kaneshige - Feature Developer
+Andrew Guttman- Feature Developer, UI Developer
+
+Tasks:
+Kevin Gray: Story 2 task 2,3,4
+Alex Krishnan: Story 2 task 2,3,4
+Gabe Yanovsky: Story 1 task 4 with Story 2 task 1
+Eric Kaneshige: Story 1 task 2, 4
+Andrew Guttman: Story 1 task 1, 3
+
+Eric and Andrew are the Wi-Fi Direct experts, so they are working on getting the peer-to-peer connections set up. Gabe is bridging the gap between setting up a wifi connection and telling the mesh network manager thread about each client connect/disconnect. Alex and Kevin have been working on the mesh protocol this whole time, so they are the ones who will implement it.

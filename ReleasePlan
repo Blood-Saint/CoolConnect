@@ -3,8 +3,8 @@ Version 2.0 11/03/14
 
 High Level Goals:
 Create a chat client that works primarily using mesh networking
-Make chat client pleasant to use
-Add functionality to improve chat client's usefulness and ease of use
+Complete basic meshnetwork + implement basic features + fix remaing bugs
+Have all phones automatically connect to each other, and have the mesh networking completed
 
 Sprint 1:
 As a developer, I would like to know the code I'm working with (15)
@@ -20,17 +20,11 @@ still being solely peer-to-peer so I can have robust interactions without relyin
 As a user I want to chat with people nearby so I can have a simple and easy way of connecting quickly (8)
 
 
-
-
-
-
 Sprint 3:
+ As a user, I want my phone to automatically connect to all other phones running CoolConnect so that I can join the mesh network. (32)
 As a user I want a chat network to be as expansive and resilient as possible while
-still being solely peer-to-peer so I can have robust interactions without relying on a centralized system (40)
-As a developer I want a solid code base so I can expand on it effectively (20)
-As a user I want to be able to chat only with my friends (8)
-As a user I want to be able to customize my experience with the chat (8)
-As a developer I want good UI to accompany the features I implement (15)
+still being solely peer-to-peer so I can have robust interactions without relying on a centralized system. (36)
+
 
 Backlog:
 FTP
@@ -46,3 +40,7 @@ As a user looking for privacy, I want to make a chat that can only be joined by 
 As a paranoid schizophrenic, I don't want the governemnt overhearing my conversations
 As a user I would like to look for my friends
 As a user, I would like to look for specific chats
+
+As a user I want to be able to chat only with my friends (8)
+As a user I want to be able to customize my experience with the chat (8)
+As a developer I want good UI to accompany the features I implement (15)
