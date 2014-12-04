@@ -101,7 +101,7 @@ public class MainActivity extends Activity {
 		//This is so the text box can be used. 
 		editText1 = (EditText) findViewById(R.id.editText1);
 		
-		p2pbutt = (Button) findViewById(R.id.atn_direct_enable);
+		//p2pbutt = (Button) findViewById(R.id.atn_direct_enable);
         discoverbutt = (Button) findViewById(R.id.atn_direct_discover);
         createBtn = (Button) findViewById(R.id.button1);
         
@@ -153,21 +153,21 @@ public class MainActivity extends Activity {
         
     	});
         
-        p2pbutt.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-            	if (mManager != null && mChannel != null) {
-
-                    // Since this is the system wireless settings activity, it's
-                    // not going to send us a result. We will be notified by
-                    // WiFiDeviceBroadcastReceiver instead.
-            		startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
-                } else {
-                    Log.i("netcode", "channel or manager is null");
-                }
-            }
-        });
+//        p2pbutt.setOnClickListener(new OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//            	if (mManager != null && mChannel != null) {
+//
+//                    // Since this is the system wireless settings activity, it's
+//                    // not going to send us a result. We will be notified by
+//                    // WiFiDeviceBroadcastReceiver instead.
+//            		startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+//                } else {
+//                    Log.i("netcode", "channel or manager is null");
+//                }
+//            }
+//        });
         discoverbutt.setOnClickListener(new OnClickListener() {
         	// will use fillList later
             @Override

@@ -119,10 +119,10 @@ public class GroupMemberClientAsyncTask implements Runnable {
                             readString = new ChatMessage(MainActivity.username + ": " + readString.getText(), ChatMessage.Types.MESSAGE);
                             session.queueMessage(readString);
                             Log.d("message", "put '" + readString.getText() + "' into the message queue");
-                            readString.setText("*" + readString.getText());
+                            String displayStr =  "*" + readString.getText();
                             Message newChatMessage = new Message();
                             newChatMessage.what = GroupMemberClientAsyncTask.GMCAT_NEW_MESSAGE;
-                            newChatMessage.obj = readString.getText();
+                            newChatMessage.obj = displayStr;
 
                             ((ChatActivity) ChatActivity.currentChatActivity).handler.sendMessage(newChatMessage);
                         } else {

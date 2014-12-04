@@ -9,18 +9,6 @@
     android:background="@color/YotsubaB"
     tools:context=".MainActivity" >
 
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/comment"
-        android:layout_below="@+id/comment"
-        android:ems="10"
-        android:hint="Username"
-        android:imeOptions="actionSend" >
-
-    </EditText>
-
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
@@ -44,17 +32,6 @@
     -->
 
     <Button
-        android:id="@+id/atn_direct_enable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText1"
-        android:layout_below="@+id/editText1"
-        android:icon="@drawable/ic_action_on_off"
-        android:showAsAction="ifRoom|withText"
-        android:text="@string/enable_p2p_button"
-        android:background="@drawable/btn_yellow" />
-
-    <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -74,23 +51,38 @@
         android:background="@drawable/btn_yellow"
         android:icon="@drawable/ic_action_discover"
         android:showAsAction="ifRoom|withText"
-        android:text="@string/discover_peers_button" />
+        android:text="Refresh" />
 
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button3"
-        android:layout_alignRight="@+id/button2"
+        android:layout_alignBottom="@+id/button3"
+        android:layout_alignRight="@+id/atn_direct_discover"
         android:background="@drawable/btn_yellow"
         android:text="Create Room" />
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="19dp"
+        android:layout_toLeftOf="@+id/button2"
+        android:ems="10"
+        android:hint="Username"
+        android:imeOptions="actionSend" >
+
+        <requestFocus />
+    </EditText>
 
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/atn_direct_enable"
+        android:layout_below="@+id/button2"
         android:background="@drawable/btn_yellow"
         android:onClick="toggleAuto"
         android:text="Auto Connect: Off" />
