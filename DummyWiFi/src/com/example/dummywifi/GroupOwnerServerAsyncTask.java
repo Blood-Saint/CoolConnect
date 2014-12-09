@@ -59,8 +59,7 @@ public class GroupOwnerServerAsyncTask implements Runnable {
         try {
             for (GroupMemberClientAsyncTask member : memberList)
             {
-                member.client.getConnection().sendCommand("disconnect");
-                member.closeClient();
+                  member.closeClient();
             }
             serverSocket.close();
         } catch(IOException e) {
@@ -156,12 +155,6 @@ public class GroupOwnerServerAsyncTask implements Runnable {
 	            
 	            Thread workerThread = new Thread(gowat);
 	            workerThread.start();
-
-                if (backup == false)
-                {
-                    client.getConnection().sendCommand("backup");
-                    backup = true;
-                }
 	            
 	            Log.d("netcode", "Worker thread started, status is: " + workerThread.getState());
 	                                   
