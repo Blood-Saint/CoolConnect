@@ -1,0 +1,20 @@
+Sometimes non-functional after quitting and restarting through recent apps.
+Start app, create or join room. Press back to quit app. Hold home button to access recent apps. Launch CoolConnect.
+Leftover grabage sometimes is left in activities thread due to race condition.
+Fix race condition on app exit.
+
+Sometimes crashes when trying to join room if room owner's phone is asleep.
+User 1: Start app. Create room. Turn off screen.
+User 2: In app, select room of User 1 to connect to. Crash.
+Wifi direct issue.
+Wait for newer version of wifi direct.
+
+Can not rediscover room after connecting to and disconnecting from it.
+Start app. Join room. Press back to quit app. Restart app. Room will not be discovered.
+Group owner does not clean leftover grabage from lost connections
+Detect disconnections.
+
+Sometimes crashes when handling commands.
+Start app. Create room/join room.
+Command handling is buggy.
+Minimize commands sent and fix command handling.
