@@ -11,8 +11,8 @@ Wait for newer version of wifi direct.
 
 Can not rediscover room after connecting to and disconnecting from it.
 Start app. Join room. Press back to quit app. Restart app. Room will not be discovered.
-Group owner does not clean leftover grabage from lost connections
-Detect disconnections.
+Group owner does not clean leftover grabage from lost connections.
+Detect disconnections to trigger cleaning.
 
 Sometimes crashes when handling commands.
 Start app. Create room/join room.
